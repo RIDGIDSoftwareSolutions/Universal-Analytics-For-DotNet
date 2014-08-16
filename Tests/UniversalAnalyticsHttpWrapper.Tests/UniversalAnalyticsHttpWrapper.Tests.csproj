@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="EventTrackerTests.cs" />
     <Compile Include="IEventTracker.cs" />
+    <Compile Include="PostDataBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
