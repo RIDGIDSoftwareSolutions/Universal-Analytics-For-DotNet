@@ -20,7 +20,7 @@ namespace UniversalAnalyticsHttpWrapper
             this.googleDataSender = googleDataSender;
         }
 
-        public void TrackEvent(UniversalAnalyticsEvent analyticsEvent)
+        public void TrackEvent(IUniversalAnalyticsEvent analyticsEvent)
         {
             string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
 

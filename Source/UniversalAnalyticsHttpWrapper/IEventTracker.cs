@@ -7,6 +7,6 @@ namespace UniversalAnalyticsHttpWrapper
 {
     public interface IEventTracker
     {
-        void TrackEvent(UniversalAnalyticsEvent analyticsEvent);
+        void TrackEvent(IUniversalAnalyticsEvent analyticsEvent);
     }
 }

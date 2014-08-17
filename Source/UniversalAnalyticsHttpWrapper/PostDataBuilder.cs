@@ -12,8 +12,6 @@ namespace UniversalAnalyticsHttpWrapper
 {
     public class PostDataBuilder : IPostDataBuilder
     {
-        internal const string APP_KEY_UNIVERSAL_ANALYTICS_VERSION = "UniversalAnalytics.Version";
-        internal const string APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID = "UniversalAnalytics.TrackingId";
         public const string PARAMETER_KEY_VERSION = "v";
         public const string PARAMETER_KEY_TRACKING_ID = "tid";
         public const string PARAMETER_KEY_ANONYMOUS_CLIENT_ID = "cid";
@@ -24,28 +22,15 @@ namespace UniversalAnalyticsHttpWrapper
         public const string PARAMETER_KEY_EVENT_VALUE = "ev";
         public const string HIT_TYPE_EVENT = "event";
 
-        private IConfigurationManager configurationManager;
-
         public PostDataBuilder()
         {
-            this.configurationManager = new ConfigurationManager();
         }
 
-        public PostDataBuilder(IConfigurationManager configurationManager)
+        public string BuildPostDataString(IUniversalAnalyticsEvent analyticsEvent)
         {
-            this.configurationManager = configurationManager;
-        }
-
-        public string BuildPostDataString(UniversalAnalyticsEvent analyticsEvent)
-        {
-            ValidateRequiredFields(analyticsEvent);
-
-            string version = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_VERSION);
-            string trackingId = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
-
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(string.Empty);
-            nameValueCollection[PARAMETER_KEY_VERSION] = version;
-            nameValueCollection[PARAMETER_KEY_TRACKING_ID] = trackingId;
+            nameValueCollection[PARAMETER_KEY_VERSION] = analyticsEvent.MeasurementProtocolVersion;
+            nameValueCollection[PARAMETER_KEY_TRACKING_ID] = analyticsEvent.TrackingId;
             nameValueCollection[PARAMETER_KEY_ANONYMOUS_CLIENT_ID] = analyticsEvent.AnonymousClientId;
             nameValueCollection[PARAMETER_KEY_HIT_TYPE] = HitTypeEnum.@event.ToString();
             nameValueCollection[PARAMETER_KEY_EVENT_ACTION] = analyticsEvent.EventAction;
@@ -62,35 +47,6 @@ namespace UniversalAnalyticsHttpWrapper
             }
 
             return nameValueCollection.ToString();
-        }
-
-        private static void ValidateRequiredFields(UniversalAnalyticsEvent analyticsEvent)
-        {
-            if (string.IsNullOrWhiteSpace(analyticsEvent.AnonymousClientId))
-            {
-                throw new ArgumentException("analyticsEvent.AnonymousClientId");
-            }
-
-            if (string.IsNullOrWhiteSpace(analyticsEvent.EventCategory))
-            {
-                throw new ArgumentException("analyticsEvent.Category");
-            }
-
-            if (string.IsNullOrWhiteSpace(analyticsEvent.EventAction))
-            {
-                throw new ArgumentException("analyticsEvent.Action");
-            }
-        }
-
-        private string RetrieveAppSetting(string appKey)
-        {
-            string appSetting = configurationManager.AppSettings[appKey];
-            if (appSetting == null)
-            {
-                throw new ConfigEntryMissingException(appKey);
-            }
-
-            return appSetting;
         }
 
         public enum HitTypeEnum

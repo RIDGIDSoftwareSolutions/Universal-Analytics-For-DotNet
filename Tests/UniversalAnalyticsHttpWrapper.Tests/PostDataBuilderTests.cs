@@ -15,133 +15,42 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     [TestFixture]
     public class PostDataBuilderTests
     {
-        protected IConfigurationManager configurationManagerMock;
-        protected IAppSettings appSettingsMock;
-        protected PostDataBuilder postDataBuilder;
-        protected UniversalAnalyticsEvent analyticsEvent;
-        protected string version = "1";
-        protected string trackingId = "UA-52123335-1";
-        protected string anonymousClientId = "anonymous client id";
-        protected string eventCategory = "event category";
-        protected string eventAction = "event action";
-        protected string eventLabel = "event label";
-        protected string eventValue = "500";
+        private PostDataBuilder postDataBuilder;
+        private IUniversalAnalyticsEvent analyticsEvent;
+        private string measurementProtocolVersion = "1";
+        private string trackingId = "UA-52123335-1";
+        private string anonymousClientId = "anonymous client id";
+        private string eventCategory = "event category";
+        private string eventAction = "event action";
+        private string eventLabel = "event label";
+        private string eventValue = "500";
 
         [SetUp]
         public void SetUp()
         {
-            configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
-            appSettingsMock = MockRepository.GenerateMock<IAppSettings>();
+            postDataBuilder = new PostDataBuilder();
 
-            postDataBuilder = new PostDataBuilder(configurationManagerMock);
-
-            configurationManagerMock.Expect(mock => mock.AppSettings)
-                .Return(appSettingsMock);
-
-            //an event that has enough data populated that it could be logged successfully
-            analyticsEvent = new UniversalAnalyticsEvent(
-                postDataBuilder, 
-                anonymousClientId,
-                eventCategory,
-                eventAction,
-                eventLabel,
-                eventValue);
-        }
-
-        private void SetupMocksForConfigCalls(bool setupVersionLookup, bool setupTrackingIdLookup)
-        {
-            if (setupVersionLookup)
-            {
-                appSettingsMock.Expect(mock => mock[PostDataBuilder.APP_KEY_UNIVERSAL_ANALYTICS_VERSION])
-                    .Return(version);
-            }
-
-            if (setupTrackingIdLookup)
-            {
-                appSettingsMock.Expect(mock => mock[PostDataBuilder.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID])
-                    .Return(trackingId);
-            }
+            analyticsEvent = MockRepository.GenerateMock<IUniversalAnalyticsEvent>();
+            analyticsEvent.Expect(mock => mock.MeasurementProtocolVersion)
+                .Return(measurementProtocolVersion);
+            analyticsEvent.Expect(mock => mock.TrackingId)
+                .Return(trackingId);
+            analyticsEvent.Expect(mock => mock.AnonymousClientId)
+                .Return(anonymousClientId);
+            analyticsEvent.Expect(mock => mock.EventAction)
+                .Return(eventAction);
+            analyticsEvent.Expect(mock => mock.EventCategory)
+                .Return(eventCategory);
+            analyticsEvent.Expect(mock => mock.EventLabel)
+                .Return(eventLabel);
+            analyticsEvent.Expect(mock => mock.EventValue)
+                .Return(eventValue);
         }
 
         [Test]
-        public void ItThrowsAConfigEntryMissingExceptionIfTheVersionIsntSetInTheConfig()
+        public void ItPutsTheMeasurementProtocolVersionInTheString()
         {
-            ConfigEntryMissingException expectedException = new ConfigEntryMissingException(PostDataBuilder.APP_KEY_UNIVERSAL_ANALYTICS_VERSION);
-
-            ConfigEntryMissingException exception = Assert.Throws<ConfigEntryMissingException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-
-            Assert.AreEqual(expectedException.Message, exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAConfigEntryMissingExceptionIfTheTrackingIdIsntSetInTheConfig()
-        {
-            SetupMocksForConfigCalls(true, false);
-            ConfigEntryMissingException expectedException = new ConfigEntryMissingException(PostDataBuilder.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
-
-            ConfigEntryMissingException exception = Assert.Throws<ConfigEntryMissingException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-
-            Assert.AreEqual(expectedException.Message, exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsWhiteSpace()
-        {
-            analyticsEvent.anonymousClientId = "   ";
-
-            Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-            Assert.AreEqual("analyticsEvent.AnonymousClientId", exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsNull()
-        {
-            analyticsEvent.anonymousClientId = null;
-
-            Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-            Assert.AreEqual("analyticsEvent.AnonymousClientId", exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheActionIsWhiteSpace()
-        {
-            analyticsEvent.eventAction = "   ";
-
-            Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-            Assert.AreEqual("analyticsEvent.Action", exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheActionIsNull()
-        {
-            analyticsEvent.eventAction = null;
-
-            Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-            Assert.AreEqual("analyticsEvent.Action", exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheCategoryIsWhiteSpace()
-        {
-            analyticsEvent.eventCategory = "   ";
-
-            Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-            Assert.AreEqual("analyticsEvent.Category", exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheCategoryIsNull()
-        {
-            analyticsEvent.eventCategory = null;
-
-            Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
-            Assert.AreEqual("analyticsEvent.Category", exception.Message);
-        }
-
-        [Test]
-        public void ItPutsTheVersionInTheString()
-        {
-            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_VERSION, version);
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_VERSION, measurementProtocolVersion);
         }
 
         [Test]
@@ -183,8 +92,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItDoesntAddTheEventLabelIfItIsNull()
         {
-            SetupMocksForConfigCalls(true, true);
-            analyticsEvent.eventLabel = null;
+            analyticsEvent.Expect(mock => mock.EventLabel)
+                .Return(null)
+                .Repeat.Any();
             string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
@@ -201,8 +111,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItDoesntAddTheEventValueIfItIsNull()
         {
-            SetupMocksForConfigCalls(true, true);
-            analyticsEvent.eventValue = null;
+            analyticsEvent.Expect(mock => mock.EventValue)
+                .Return(null)
+                .Repeat.Any();
             string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
@@ -212,7 +123,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
         private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue)
         {
-            SetupMocksForConfigCalls(true, true);
             string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);

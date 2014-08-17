@@ -15,10 +15,10 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     [TestFixture]
     public class EventTrackerTests
     {
-        protected EventTracker eventTracker;
-        protected UniversalAnalyticsEvent analyticsEvent;
-        protected IPostDataBuilder postDataBuilderMock;
-        protected IGoogleDataSender googleDataSenderMock;
+        private EventTracker eventTracker;
+        private IUniversalAnalyticsEvent analyticsEvent;
+        private IPostDataBuilder postDataBuilderMock;
+        private IGoogleDataSender googleDataSenderMock;
 
         [SetUp]
         public void SetUp()
@@ -27,8 +27,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             googleDataSenderMock = MockRepository.GenerateMock<IGoogleDataSender>();
             eventTracker = new EventTracker(postDataBuilderMock, googleDataSenderMock);
 
-            //an event that has enough data populated that it could be logged successfully
-            analyticsEvent = new UniversalAnalyticsEvent("client id", "category", "action");
+            analyticsEvent = MockRepository.GenerateMock<IUniversalAnalyticsEvent>();
         }
 
         [Test]
