@@ -36,6 +36,7 @@
       <HintPath>packages\System.Configuration.Abstractions.2.0.2.15\lib\net45\System.Configuration.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />

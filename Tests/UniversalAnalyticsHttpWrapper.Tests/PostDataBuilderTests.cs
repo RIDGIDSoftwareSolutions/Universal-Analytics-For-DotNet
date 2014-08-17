@@ -2,10 +2,12 @@
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration.Abstractions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using UniversalAnalyticsHttpWrapper.Exceptions;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
@@ -19,6 +21,11 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         protected UniversalAnalyticsEvent analyticsEvent;
         protected string version = "1";
         protected string trackingId = "UA-52123335-1";
+        protected string anonymousClientId = "anonymous client id";
+        protected string eventCategory = "event category";
+        protected string eventAction = "event action";
+        protected string eventLabel = "event label";
+        protected string eventValue = "500";
 
         [SetUp]
         public void SetUp()
@@ -34,10 +41,11 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             //an event that has enough data populated that it could be logged successfully
             analyticsEvent = new UniversalAnalyticsEvent(postDataBuilder)
             {
-                AnonymousClientId = "client id",
-                Category = "category",
-                Action = "action",
-                Label = "label"
+                AnonymousClientId = anonymousClientId,
+                EventCategory = eventCategory,
+                EventAction = eventAction,
+                EventLabel = eventLabel,
+                EventValue = eventValue
             };
         }
 
@@ -98,7 +106,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheActionIsWhiteSpace()
         {
-            analyticsEvent.Action = "   ";
+            analyticsEvent.EventAction = "   ";
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Action", exception.Message);
@@ -107,7 +115,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheActionIsNull()
         {
-            analyticsEvent.Action = null;
+            analyticsEvent.EventAction = null;
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Action", exception.Message);
@@ -116,7 +124,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheCategoryIsWhiteSpace()
         {
-            analyticsEvent.Category = "   ";
+            analyticsEvent.EventCategory = "   ";
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Category", exception.Message);
@@ -125,11 +133,94 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheCategoryIsNull()
         {
-            analyticsEvent.Category = null;
+            analyticsEvent.EventCategory = null;
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Category", exception.Message);
         }
 
+        [Test]
+        public void ItPutsTheVersionInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_VERSION, version);
+        }
+
+        [Test]
+        public void ItPutsTheTrackingIdInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_TRACKING_ID, trackingId);
+        }
+
+        [Test]
+        public void ItPutsTheAnonymousClientIdInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_ANONYMOUS_CLIENT_ID, anonymousClientId);
+        }
+
+        [Test]
+        public void ItSetsTheHitTypeToEventInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_HIT_TYPE, PostDataBuilder.HIT_TYPE_EVENT);
+        }
+
+        [Test]
+        public void ItPutsTheEventActionInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_EVENT_ACTION, eventAction);
+        }
+
+        [Test]
+        public void ItPutsTheEventCategoryInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_EVENT_CATEGORY, eventCategory);
+        }
+
+        [Test]
+        public void ItPutsTheEventLabelInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_EVENT_LABEL, eventLabel);
+        }
+
+        [Test]
+        public void ItDoesntAddTheEventLavelIfItIsNull()
+        {
+            SetupMocksForConfigCalls(true, true);
+            analyticsEvent.EventLabel = null;
+            string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
+
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
+
+            Assert.Null(nameValueCollection[PostDataBuilder.PARAMETER_KEY_EVENT_LABEL]);
+        }
+
+        [Test]
+        public void ItPutsTheEventValueInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_EVENT_VALUE, eventValue);
+        }
+
+        [Test]
+        public void ItDoesntAddTheEventValueIfItIsNull()
+        {
+            SetupMocksForConfigCalls(true, true);
+            analyticsEvent.EventValue = null;
+            string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
+
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
+
+            Assert.Null(nameValueCollection[PostDataBuilder.PARAMETER_KEY_EVENT_VALUE]);
+        }
+
+        private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue)
+        {
+            SetupMocksForConfigCalls(true, true);
+            string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
+
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
+
+            string actualValue = nameValueCollection[key];
+
+            Assert.AreEqual(expectedValue, actualValue);
+        }
     }
 }

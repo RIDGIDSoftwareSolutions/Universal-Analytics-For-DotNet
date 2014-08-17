@@ -18,10 +18,12 @@ namespace UniversalAnalyticsHttpWrapper
         {
             this.postDataBuilder = postDataBuilder;
         }
+
         public string Version { get; set; }
-        public string Category { get; set; }
-        public string Action { get; set; }
-        public string Label { get; set; }
+        public string EventCategory { get; set; }
+        public string EventAction { get; set; }
+        public string EventLabel { get; set; }
         public string AnonymousClientId { get; set; }
+        public string EventValue { get; set; }
     }
 }

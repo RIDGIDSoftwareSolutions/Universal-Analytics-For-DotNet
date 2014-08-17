@@ -31,9 +31,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             analyticsEvent = new UniversalAnalyticsEvent(postDataBuilderMock)
             {
                 AnonymousClientId = "client id",
-                Category = "category",
-                Action = "action",
-                Label = "label"
+                EventCategory = "category",
+                EventAction = "action",
+                EventLabel = "label"
             };
         }
 
