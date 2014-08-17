@@ -14,6 +14,12 @@ namespace UniversalAnalyticsHttpWrapper
         private IGoogleDataSender googleDataSender;
         public static readonly Uri GOOGLE_COLLECTION_URI = new Uri("http://www.google-analytics.com/collect");
 
+        public EventTracker()
+        {
+            this.postDataBuilder = new PostDataBuilder();
+            this.googleDataSender = new GoogleDataSender();
+        }
+
         public EventTracker(IPostDataBuilder postDataBuilder, IGoogleDataSender googleDataSender)
         {
             this.postDataBuilder = postDataBuilder;

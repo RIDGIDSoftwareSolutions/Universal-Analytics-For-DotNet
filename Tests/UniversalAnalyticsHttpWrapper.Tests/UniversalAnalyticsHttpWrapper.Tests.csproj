@@ -52,7 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventTrackerTests.cs" />
-    <Compile Include="IEventTracker.cs" />
+    <Compile Include="GoogleDataSenderTests.cs" />
+    <Compile Include="IntegrationTests.cs" />
     <Compile Include="PostDataBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UniversalAnalyticsEventTests.cs" />
@@ -64,6 +65,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

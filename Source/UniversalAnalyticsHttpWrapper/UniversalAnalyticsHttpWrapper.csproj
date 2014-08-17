@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="EventTracker.cs" />
     <Compile Include="Exceptions\ConfigEntryMissingException.cs" />
+    <Compile Include="GoogleDataSender.cs" />
     <Compile Include="IEventTracker.cs" />
     <Compile Include="IGoogleDataSender.cs" />
     <Compile Include="IPostDataBuilder.cs" />
