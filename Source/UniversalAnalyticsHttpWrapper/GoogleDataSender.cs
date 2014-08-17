@@ -8,7 +8,7 @@ using System.Web;
 
 namespace UniversalAnalyticsHttpWrapper
 {
-    public class GoogleDataSender : IGoogleDataSender
+    internal class GoogleDataSender : IGoogleDataSender
     {
         public void SendData(Uri googleCollectionUri, string postData)
         {

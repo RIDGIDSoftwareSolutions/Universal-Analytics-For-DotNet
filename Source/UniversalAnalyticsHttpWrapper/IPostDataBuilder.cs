@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UniversalAnalyticsHttpWrapper
 {
-    public interface IPostDataBuilder
+    internal interface IPostDataBuilder
     {
         string BuildPostDataString(IUniversalAnalyticsEvent analyticsEvent);
     }

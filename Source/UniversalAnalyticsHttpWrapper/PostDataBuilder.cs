@@ -10,21 +10,17 @@ using UniversalAnalyticsHttpWrapper.Exceptions;
 
 namespace UniversalAnalyticsHttpWrapper
 {
-    public class PostDataBuilder : IPostDataBuilder
+    internal class PostDataBuilder : IPostDataBuilder
     {
-        public const string PARAMETER_KEY_VERSION = "v";
-        public const string PARAMETER_KEY_TRACKING_ID = "tid";
-        public const string PARAMETER_KEY_ANONYMOUS_CLIENT_ID = "cid";
-        public const string PARAMETER_KEY_HIT_TYPE = "t";
-        public const string PARAMETER_KEY_EVENT_CATEGORY = "ec";
-        public const string PARAMETER_KEY_EVENT_ACTION = "ea";
-        public const string PARAMETER_KEY_EVENT_LABEL = "el";
-        public const string PARAMETER_KEY_EVENT_VALUE = "ev";
-        public const string HIT_TYPE_EVENT = "event";
-
-        public PostDataBuilder()
-        {
-        }
+        internal const string PARAMETER_KEY_VERSION = "v";
+        internal const string PARAMETER_KEY_TRACKING_ID = "tid";
+        internal const string PARAMETER_KEY_ANONYMOUS_CLIENT_ID = "cid";
+        internal const string PARAMETER_KEY_HIT_TYPE = "t";
+        internal const string PARAMETER_KEY_EVENT_CATEGORY = "ec";
+        internal const string PARAMETER_KEY_EVENT_ACTION = "ea";
+        internal const string PARAMETER_KEY_EVENT_LABEL = "el";
+        internal const string PARAMETER_KEY_EVENT_VALUE = "ev";
+        internal const string HIT_TYPE_EVENT = "event";
 
         public string BuildPostDataString(IUniversalAnalyticsEvent analyticsEvent)
         {
@@ -49,7 +45,10 @@ namespace UniversalAnalyticsHttpWrapper
             return nameValueCollection.ToString();
         }
 
-        public enum HitTypeEnum
+        /// <summary>
+        /// Represents the different Measurement Protocol hit types supported by this package.
+        /// </summary>
+        internal enum HitTypeEnum
         {
             @event
         }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UniversalAnalyticsHttpWrapper
 {
-    public interface IGoogleDataSender
+    internal interface IGoogleDataSender
     {
         void SendData(Uri googleCollectionUri, string postData);
     }
