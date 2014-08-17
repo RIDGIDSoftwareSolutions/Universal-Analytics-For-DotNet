@@ -7,23 +7,45 @@ namespace UniversalAnalyticsHttpWrapper
 {
     public class UniversalAnalyticsEvent
     {
-        private IPostDataBuilder postDataBuilder;
+        internal string anonymousClientId;
+        internal string eventCategory;
+        internal string eventAction;
+        internal string eventLabel;
+        internal string eventValue;
 
-        public UniversalAnalyticsEvent()
+        public UniversalAnalyticsEvent(
+            string anonymousClientId,
+            string eventCategory,
+            string eventAction,
+            string eventLabel = null,
+            string eventValue = null)
         {
-            this.postDataBuilder = new PostDataBuilder();
+            this.anonymousClientId = anonymousClientId;
+            this.eventCategory = eventCategory;
+            this.eventAction = eventAction;
+            this.eventLabel = eventLabel;
+            this.eventValue = eventValue;
         }
 
-        public UniversalAnalyticsEvent(IPostDataBuilder postDataBuilder)
+        public UniversalAnalyticsEvent(
+            PostDataBuilder postDataBuilder,
+            string anonymousClientId,
+            string eventCategory,
+            string eventAction,
+            string eventLabel = null,
+            string eventValue = null)
         {
-            this.postDataBuilder = postDataBuilder;
+            this.anonymousClientId = anonymousClientId;
+            this.eventCategory = eventCategory;
+            this.eventAction = eventAction;
+            this.eventLabel = eventLabel;
+            this.eventValue = eventValue;
         }
 
-        public string Version { get; set; }
-        public string EventCategory { get; set; }
-        public string EventAction { get; set; }
-        public string EventLabel { get; set; }
-        public string AnonymousClientId { get; set; }
-        public string EventValue { get; set; }
+        public string AnonymousClientId { get { return this.anonymousClientId; } }
+        public string EventCategory { get { return this.eventCategory; } }
+        public string EventAction { get { return this.eventAction; } }
+        public string EventLabel { get { return this.eventLabel; } }
+        public string EventValue { get { return this.eventValue; } }
     }
 }

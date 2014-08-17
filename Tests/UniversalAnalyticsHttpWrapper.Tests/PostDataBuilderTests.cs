@@ -39,14 +39,13 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 .Return(appSettingsMock);
 
             //an event that has enough data populated that it could be logged successfully
-            analyticsEvent = new UniversalAnalyticsEvent(postDataBuilder)
-            {
-                AnonymousClientId = anonymousClientId,
-                EventCategory = eventCategory,
-                EventAction = eventAction,
-                EventLabel = eventLabel,
-                EventValue = eventValue
-            };
+            analyticsEvent = new UniversalAnalyticsEvent(
+                postDataBuilder, 
+                anonymousClientId,
+                eventCategory,
+                eventAction,
+                eventLabel,
+                eventValue);
         }
 
         private void SetupMocksForConfigCalls(bool setupVersionLookup, bool setupTrackingIdLookup)
@@ -88,7 +87,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsWhiteSpace()
         {
-            analyticsEvent.AnonymousClientId = "   ";
+            analyticsEvent.anonymousClientId = "   ";
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.AnonymousClientId", exception.Message);
@@ -97,7 +96,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsNull()
         {
-            analyticsEvent.AnonymousClientId = null;
+            analyticsEvent.anonymousClientId = null;
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.AnonymousClientId", exception.Message);
@@ -106,7 +105,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheActionIsWhiteSpace()
         {
-            analyticsEvent.EventAction = "   ";
+            analyticsEvent.eventAction = "   ";
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Action", exception.Message);
@@ -115,7 +114,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheActionIsNull()
         {
-            analyticsEvent.EventAction = null;
+            analyticsEvent.eventAction = null;
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Action", exception.Message);
@@ -124,7 +123,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheCategoryIsWhiteSpace()
         {
-            analyticsEvent.EventCategory = "   ";
+            analyticsEvent.eventCategory = "   ";
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Category", exception.Message);
@@ -133,7 +132,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheCategoryIsNull()
         {
-            analyticsEvent.EventCategory = null;
+            analyticsEvent.eventCategory = null;
 
             Exception exception = Assert.Throws<ArgumentException>(() => postDataBuilder.BuildPostDataString(analyticsEvent));
             Assert.AreEqual("analyticsEvent.Category", exception.Message);
@@ -182,10 +181,10 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
-        public void ItDoesntAddTheEventLavelIfItIsNull()
+        public void ItDoesntAddTheEventLabelIfItIsNull()
         {
             SetupMocksForConfigCalls(true, true);
-            analyticsEvent.EventLabel = null;
+            analyticsEvent.eventLabel = null;
             string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
@@ -203,7 +202,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItDoesntAddTheEventValueIfItIsNull()
         {
             SetupMocksForConfigCalls(true, true);
-            analyticsEvent.EventValue = null;
+            analyticsEvent.eventValue = null;
             string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);

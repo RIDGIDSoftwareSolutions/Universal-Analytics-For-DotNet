@@ -28,13 +28,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             eventTracker = new EventTracker(postDataBuilderMock, googleDataSenderMock);
 
             //an event that has enough data populated that it could be logged successfully
-            analyticsEvent = new UniversalAnalyticsEvent(postDataBuilderMock)
-            {
-                AnonymousClientId = "client id",
-                EventCategory = "category",
-                EventAction = "action",
-                EventLabel = "label"
-            };
+            analyticsEvent = new UniversalAnalyticsEvent("client id", "category", "action");
         }
 
         [Test]

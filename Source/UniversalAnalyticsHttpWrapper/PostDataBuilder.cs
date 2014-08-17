@@ -61,9 +61,7 @@ namespace UniversalAnalyticsHttpWrapper
                 nameValueCollection[PARAMETER_KEY_EVENT_VALUE] = analyticsEvent.EventValue;
             }
 
-            string postData = nameValueCollection.ToString();
-
-            return postData;
+            return nameValueCollection.ToString();
         }
 
         private static void ValidateRequiredFields(UniversalAnalyticsEvent analyticsEvent)
