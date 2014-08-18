@@ -6,13 +6,13 @@ using System.Text;
 
 namespace UniversalAnalyticsHttpWrapper.Exceptions
 {
-    public class ConfigEntryMissingException : ConfigurationErrorsException
+    internal class ConfigEntryMissingException : ConfigurationErrorsException
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "No app setting could be found for '{0}'.";
 
         private string appKeyForMissingSetting;
 
-        public ConfigEntryMissingException(string appKeyForMissingSetting)
+        internal ConfigEntryMissingException(string appKeyForMissingSetting)
         {
             this.appKeyForMissingSetting = appKeyForMissingSetting;
         }

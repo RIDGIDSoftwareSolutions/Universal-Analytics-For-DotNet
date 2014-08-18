@@ -41,9 +41,9 @@ namespace UniversalAnalyticsHttpWrapper
         }
 
         /// <summary>
-        /// Pushes an event up to the Universal Analytics property specified in the .config file.
+        /// Pushes an event up to the Universal Analytics web property specified in the .config file.
         /// </summary>
-        /// <param name="analyticsEvent"></param>
+        /// <param name="analyticsEvent">The event to be logged.</param>
         public void TrackEvent(IUniversalAnalyticsEvent analyticsEvent)
         {
             string postData = postDataBuilder.BuildPostDataString(analyticsEvent);

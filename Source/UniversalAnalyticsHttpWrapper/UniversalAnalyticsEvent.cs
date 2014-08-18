@@ -41,7 +41,7 @@ namespace UniversalAnalyticsHttpWrapper
 
         /// <summary>
         /// This constructor expects an App Setting for 'UniversalAnalytics.Version' and 'UniversalAnalytics.TrackingId' 
-        /// in the config.
+        /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
         /// </summary>
         /// <param name="anonymousClientId">Required. Anonymous client id for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.</param>
@@ -56,6 +56,8 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
         /// one of the required config attributes are missing.</exception>
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
+        /// other than a 200 OK response.</exception>
         public UniversalAnalyticsEvent(
             string anonymousClientId,
             string eventCategory,
