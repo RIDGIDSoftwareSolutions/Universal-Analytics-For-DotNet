@@ -25,3 +25,5 @@ UniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEvent(
     "10");
 eventTracker.TrackEvent(analyticsEvent);
 ```
+
+![Alt text](https://raw.githubusercontent.com/jakejgordon/Universal-Analytics-For-DotNet/master/universal_analytics_realtime_events_screenshot.jpg?raw=true "Screenshot of Real-Time Events After Pushing Data")
