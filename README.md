@@ -5,7 +5,7 @@ A .NET wrapper over top of Google's Universal Analytics Measurement Protocol HTT
 
 Pushing an event is as simple as:
 
-'''
+```
 EventTracker eventTracker = new EventTracker();
 UniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEvent(
     //Anonymous client id. See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
@@ -15,4 +15,4 @@ UniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEvent(
     "test label", 
     "10");
 eventTracker.TrackEvent(analyticsEvent);
-'''
+```
