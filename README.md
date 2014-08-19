@@ -27,3 +27,5 @@ eventTracker.TrackEvent(analyticsEvent);
 ```
 
 ![Alt text](https://raw.githubusercontent.com/jakejgordon/Universal-Analytics-For-DotNet/master/universal_analytics_realtime_events_screenshot.jpg?raw=true "Screenshot of Real-Time Events After Pushing Data")
+
+The code is almost entirely unit testing so it should be stable and easily updatable.
