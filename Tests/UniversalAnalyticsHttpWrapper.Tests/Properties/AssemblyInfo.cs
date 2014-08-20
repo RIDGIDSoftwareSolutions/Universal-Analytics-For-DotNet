@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UniversalAnalyticsHttpWrapper.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ridge Tool Company")]
+[assembly: AssemblyCompany("jakejgordon")]
 [assembly: AssemblyProduct("UniversalAnalyticsHttpWrapper.Tests")]
-[assembly: AssemblyCopyright("Copyright © Ridge Tool Company 2014")]
+[assembly: AssemblyCopyright("Copyright © jakejgordon 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
