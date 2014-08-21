@@ -17,20 +17,7 @@ namespace UniversalAnalyticsHttpWrapper
     /// one of the required config attributes are missing.</exception>
     public class UniversalAnalyticsEvent : UniversalAnalyticsHttpWrapper.IUniversalAnalyticsEvent
     {
-        /// <summary>
-        /// This key is required in the .config. The Version will only change when the Measurement Protocol
-        /// has breaking changes. If that happens, the code in this package may need to be updated.
-        /// </summary>
-        public const string APP_KEY_UNIVERSAL_ANALYTICS_VERSION = "UniversalAnalytics.Version";
-        /// <summary>
-        /// This key is required in the .config. Find this value from your Universal Analytics property that was set up on
-        /// www.google.com/analytics/
-        /// </summary>
-        public const string APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID = "UniversalAnalytics.TrackingId";
         internal const string EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE = "{0} cannot be null or whitespace";
-
-        //TODO better to provide a constructor overload or to just use setter injection?
-        internal IConfigurationManager configurationManager;
 
         private string measurementProtocolVersion;
         private string trackingId;
@@ -40,32 +27,40 @@ namespace UniversalAnalyticsHttpWrapper
         private string eventLabel;
         private string eventValue;
 
-        internal UniversalAnalyticsEvent(
-            string anonymousClientId,
-            string eventCategory,
-            string eventAction,
-            string eventLabel = null,
-            string eventValue = null) 
-                : this(
-                    new ConfigurationManager(), 
-                    anonymousClientId, 
-                    eventCategory, 
-                    eventAction, 
-                    eventLabel, 
-            eventValue)
-        {
-           
-        }
-
-        internal UniversalAnalyticsEvent(
-            IConfigurationManager configurationManager,
+        /// <param name="measurementProtocolVersion">Required. The measurement protocol version of the service.
+        /// If you don't want to pass this every time, set the UniversalAnalytics.Version app setting and use the
+        /// UniversalAnalyticsEventFactory to get instances of this class.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#v for details.</param>
+        /// <param name="param name="trackingId"">Required. The universal analytics tracking id for the property 
+        /// that events will be logged to. If you don't want to pass this every time, set the UniversalAnalytics.TrackingId 
+        /// app setting and use the UniversalAnalyticsEventFactory to get instances of this class.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#tid for details.</param>
+        /// <param name="anonymousClientId">Required. Anonymous client id for the event. 
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.</param>
+        /// <param name="eventCategory">Required. The event category for the event. 
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.</param>
+        /// <param name="eventAction">Required. The event action for the event. 
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.</param>
+        /// <param name="eventLabel">Optional. The event label for the event.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.</param>
+        /// <param name="eventValue">Optional. The event value for the event.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.</param>
+        /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
+        /// one of the required config attributes are missing.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
+        /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
+        /// other than a 200 OK response.</exception>
+        public UniversalAnalyticsEvent(
+            string measurementProtocolVersion,
+            string trackingId,
             string anonymousClientId,
             string eventCategory,
             string eventAction,
             string eventLabel = null,
             string eventValue = null)
         {
-            this.configurationManager = configurationManager;
+            this.measurementProtocolVersion = measurementProtocolVersion;
+            this.trackingId = trackingId;
             this.anonymousClientId = anonymousClientId;
             this.eventCategory = eventCategory;
             this.eventAction = eventAction;
@@ -73,20 +68,14 @@ namespace UniversalAnalyticsHttpWrapper
             this.eventValue = eventValue;
 
             ValidateRequiredFields();
-
-            string version = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_VERSION);
-            this.measurementProtocolVersion = version;
-
-            string trackingId = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
-            this.trackingId = trackingId;
         }
 
         /// <summary>
-        /// Gets the measurement protocol version. This is pulled from the .config when the object is constructed.
+        /// Gets the measurement protocol version that was passed in when the object was constructed
         /// </summary>
         public string MeasurementProtocolVersion { get { return this.measurementProtocolVersion; } }
         /// <summary>
-        /// Gets the tracking id for the Universal Analytics property. This is pulled from the .config when the object is constructed.
+        /// Gets the tracking id for the Universal Analytics property
         /// </summary>
         public string TrackingId { get { return this.trackingId; } }
         /// <summary>
@@ -112,6 +101,20 @@ namespace UniversalAnalyticsHttpWrapper
 
         private void ValidateRequiredFields()
         {
+            if (string.IsNullOrWhiteSpace(this.measurementProtocolVersion))
+            {
+                throw new ArgumentException(
+                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                    "analyticsEvent.MeasurementProtocolVersion"));
+            }
+
+            if (string.IsNullOrWhiteSpace(this.trackingId))
+            {
+                throw new ArgumentException(
+                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                    "analyticsEvent.TrackingId"));
+            }
+
             if (string.IsNullOrWhiteSpace(this.anonymousClientId))
             {
                 throw new ArgumentException(
@@ -132,17 +135,6 @@ namespace UniversalAnalyticsHttpWrapper
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
                     "analyticsEvent.EventAction"));
             }
-        }
-
-        private string RetrieveAppSetting(string appKey)
-        {
-            string appSetting = configurationManager.AppSettings[appKey];
-            if (appSetting == null)
-            {
-                throw new ConfigEntryMissingException(appKey);
-            }
-
-            return appSetting;
         }
     }
 }

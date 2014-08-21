@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration.Abstractions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalAnalyticsHttpWrapper.Exceptions;
 
 namespace UniversalAnalyticsHttpWrapper
 {
@@ -11,6 +13,29 @@ namespace UniversalAnalyticsHttpWrapper
     /// </summary>
     public class UniversalAnalyticsEventFactory : IUniversalAnalyticsEventFactory
     {
+        /// <summary>
+        /// This key is required in the .config. The Version will only change when the Measurement Protocol
+        /// has breaking changes. If that happens, the code in this package may need to be updated.
+        /// </summary>
+        public const string APP_KEY_UNIVERSAL_ANALYTICS_VERSION = "UniversalAnalytics.Version";
+        /// <summary>
+        /// This key is required in the .config. Find this value from your Universal Analytics property that was set up on
+        /// www.google.com/analytics/
+        /// </summary>
+        public const string APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID = "UniversalAnalytics.TrackingId";
+
+        private IConfigurationManager configurationManager;
+
+        public UniversalAnalyticsEventFactory()
+        {
+            this.configurationManager = new ConfigurationManager();
+        }
+
+        internal UniversalAnalyticsEventFactory(IConfigurationManager configurationManager)
+        {
+            this.configurationManager = configurationManager;
+        }
+
         /// <summary>
         /// This constructor expects an App Setting for 'UniversalAnalytics.Version' and 'UniversalAnalytics.TrackingId' 
         /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
@@ -35,14 +60,30 @@ namespace UniversalAnalyticsHttpWrapper
             string eventCategory, 
             string eventAction, 
             string eventLabel = null, 
-            string eventValue = null)
+            string eventValue = null) 
         {
+            string measurementProtocolVersion = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_VERSION);
+            string trackingId = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
+
             return new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId,
                 anonymousClientId,
                 eventCategory,
                 eventAction,
                 eventLabel,
                 eventValue);
+        }
+
+        private string RetrieveAppSetting(string appKey)
+        {
+            string appSetting = configurationManager.AppSettings[appKey];
+            if (appSetting == null)
+            {
+                throw new ConfigEntryMissingException(appKey);
+            }
+
+            return appSetting;
         }
     }
 }

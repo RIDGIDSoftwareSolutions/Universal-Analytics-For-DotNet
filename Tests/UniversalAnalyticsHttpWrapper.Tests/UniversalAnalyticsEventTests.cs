@@ -13,10 +13,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     [TestFixture]
     public class UniversalAnalyticsEventTests
     {
-        private IConfigurationManager configurationManagerMock;
-        private IAppSettings appSettingsMock;
-
-        //TODO change all private to private
         private string measurementProtocolVersion = "1";
         private string trackingId = "A-XXXXXX-YY";
         private string anonymousClientId = "anonymous client id";
@@ -25,35 +21,123 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         private string eventLabel = "event label";
         private string eventValue = "500";
 
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheMeasurementProtocolVersionIsWhitespace()
         {
-            configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
-            appSettingsMock = MockRepository.GenerateMock<IAppSettings>();
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                "   ",
+                trackingId,
+                anonymousClientId,
+                eventCategory,
+                eventAction));
 
-            configurationManagerMock.Expect(mock => mock.AppSettings)
-                .Return(appSettingsMock);
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.MeasurementProtocolVersion");
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheMeasurementProtocolVersionIsNull()
+        {
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                null,
+                trackingId,
+                anonymousClientId,
+                eventCategory,
+                eventAction));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.MeasurementProtocolVersion");
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheTrackingIdIsWhiteSpace()
+        {
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                "   ",
+                anonymousClientId,
+                eventCategory,
+                eventAction));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.TrackingId");
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        [Test]
+        public void ItThrowsAnArgumentExceptionIfTheTrackingIdIsNull()
+        {
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                null,
+                anonymousClientId,
+                eventCategory,
+                eventAction));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.TrackingId");
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsWhiteSpace()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(configurationManagerMock, "  ", eventCategory, eventAction));
-            Assert.AreEqual("analyticsEvent.AnonymousClientId", exception.Message);
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion, 
+                trackingId, 
+                "  ", 
+                eventCategory, 
+                eventAction));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.AnonymousClientId");
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsNull()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(configurationManagerMock, null, eventCategory, eventAction));
-            Assert.AreEqual("analyticsEvent.AnonymousClientId", exception.Message);
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId, 
+                null, 
+                eventCategory, 
+                eventAction));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.AnonymousClientId");
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        [Test]
+        public void ItSetsTheMeasurementProtocolVersionInTheConstructor()
+        {
+            UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
+
+            Assert.AreEqual(measurementProtocolVersion, universalAnalyticsEvent.MeasurementProtocolVersion);
+        }
+
+
+        [Test]
+        public void ItSetsTheTrackingIdInTheConstructor()
+        {
+            UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
+
+            Assert.AreEqual(trackingId, universalAnalyticsEvent.TrackingId);
         }
 
         [Test]
         public void ItSetsTheAnonymousClientIdInTheConstructor()
         {
-            SetupMocksForConfigCalls(true, true);
-            UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(configurationManagerMock, anonymousClientId, eventCategory, eventAction);
+            UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
 
             Assert.AreEqual(anonymousClientId, universalAnalyticsEvent.AnonymousClientId);
         }
@@ -61,22 +145,44 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheEventCategoryIsWhiteSpace()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(configurationManagerMock, anonymousClientId, "  ", eventAction));
-            Assert.AreEqual("analyticsEvent.Category", exception.Message);
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId, 
+                anonymousClientId, 
+                "  ", 
+                eventAction));
+            
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE, 
+                "analyticsEvent.EventCategory");
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheEventCategoryIsNull()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(configurationManagerMock, anonymousClientId, null, eventAction));
-            Assert.AreEqual("analyticsEvent.Category", exception.Message);
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId, 
+                anonymousClientId, 
+                null, 
+                eventAction));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.EventCategory");
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [Test]
         public void ItSetsTheEventCategoryInTheConstructor()
         {
-            SetupMocksForConfigCalls(true, true);
-            UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(configurationManagerMock, anonymousClientId, eventCategory, eventAction);
+            UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId, 
+                anonymousClientId, 
+                eventCategory, 
+                eventAction);
 
             Assert.AreEqual(eventCategory, universalAnalyticsEvent.EventCategory);
         }
@@ -84,23 +190,52 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheEventActionIsWhiteSpace()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(configurationManagerMock, anonymousClientId, eventCategory, "  "));
-            Assert.AreEqual("analyticsEvent.Action", exception.Message);
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId, 
+                anonymousClientId,
+                eventCategory, 
+                "  "));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.EventAction");
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheEventActionIsNull()
         {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(configurationManagerMock, anonymousClientId, eventCategory, null));
-            Assert.AreEqual("analyticsEvent.Action", exception.Message);
+            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId, 
+                anonymousClientId, 
+                eventCategory, 
+                null));
+
+            string expectedMessage = string.Format(
+                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                "analyticsEvent.EventAction");
+            Assert.AreEqual(expectedMessage, exception.Message);
+        }
+
+        [Test]
+        public void ItSetsTheMeasurementProtocolVersionTheConstructor()
+        {
+            UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
+
+            Assert.AreEqual(measurementProtocolVersion, universalAnalyticsEvent.MeasurementProtocolVersion);
         }
 
         [Test]
         public void ItSetsEventActionInTheConstructor()
         {
-            SetupMocksForConfigCalls(true, true);
-
-            UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(configurationManagerMock, anonymousClientId, eventCategory, eventAction);
+            UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
+                measurementProtocolVersion,
+                trackingId, 
+                anonymousClientId, 
+                eventCategory, 
+                eventAction);
 
             Assert.AreEqual(eventAction, universalAnalyticsEvent.EventAction);
         }
@@ -108,10 +243,13 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItSetsEventLabelInTheConstructor()
         {
-            SetupMocksForConfigCalls(true, true);
-
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                configurationManagerMock, anonymousClientId, eventCategory, eventAction, eventLabel);
+                measurementProtocolVersion,
+                trackingId, 
+                anonymousClientId, 
+                eventCategory, 
+                eventAction, 
+                eventLabel);
 
             Assert.AreEqual(eventLabel, universalAnalyticsEvent.EventLabel);
         }
@@ -119,10 +257,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItSetsEventValueInTheConstructor()
         {
-            SetupMocksForConfigCalls(true, true);
-
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                configurationManagerMock, 
+                measurementProtocolVersion,
+                trackingId,
                 anonymousClientId, 
                 eventCategory, 
                 eventAction, 
@@ -132,75 +269,17 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Assert.AreEqual(eventValue, universalAnalyticsEvent.EventValue);
         }
 
-        [Test]
-        public void ItThrowsAConfigEntryMissingExceptionIfTheVersionIsntSetInTheConfig()
+        private UniversalAnalyticsEvent GetFullyPopulatedEventUsingConstructor()
         {
-            SetupMocksForConfigCalls(false, true);
-            ConfigEntryMissingException expectedException = new ConfigEntryMissingException(UniversalAnalyticsEvent.APP_KEY_UNIVERSAL_ANALYTICS_VERSION);
-
-            ConfigEntryMissingException exception = Assert.Throws<ConfigEntryMissingException>(() => new UniversalAnalyticsEvent(
-                configurationManagerMock, 
-                anonymousClientId, 
-                eventCategory, 
-                eventAction, 
-                eventLabel, 
-                eventValue));
-
-            Assert.AreEqual(expectedException.Message, exception.Message);
-        }
-
-        [Test]
-        public void ItSetsTheMeasurementProtocolVersionInTheConstructor()
-        {
-            SetupMocksForConfigCalls(true, true);
-
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                configurationManagerMock, anonymousClientId, eventCategory, eventAction, eventLabel, eventValue);
-
-            Assert.AreEqual(measurementProtocolVersion, universalAnalyticsEvent.MeasurementProtocolVersion);
-        }
-
-        [Test]
-        public void ItThrowsAConfigEntryMissingExceptionIfTheTrackingIdIsntSetInTheConfig()
-        {
-            SetupMocksForConfigCalls(true, false);
-            ConfigEntryMissingException expectedException = new ConfigEntryMissingException(UniversalAnalyticsEvent.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
-
-            ConfigEntryMissingException exception = Assert.Throws<ConfigEntryMissingException>(() => new UniversalAnalyticsEvent(
-              configurationManagerMock, 
-              anonymousClientId,
-              eventCategory,
-              eventAction,
-              eventLabel,
-              eventValue));
-
-            Assert.AreEqual(expectedException.Message, exception.Message);
-        }
-
-        [Test]
-        public void ItSetsTheTrackingIdInTheConstructor()
-        {
-            SetupMocksForConfigCalls(true, true);
-
-            UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                configurationManagerMock, anonymousClientId, eventCategory, eventAction, eventLabel, eventValue);
-
-            Assert.AreEqual(trackingId, universalAnalyticsEvent.TrackingId);
-        }
-
-        private void SetupMocksForConfigCalls(bool setupVersionLookup, bool setupTrackingIdLookup)
-        {
-            if (setupVersionLookup)
-            {
-                appSettingsMock.Expect(mock => mock[UniversalAnalyticsEvent.APP_KEY_UNIVERSAL_ANALYTICS_VERSION])
-                    .Return(measurementProtocolVersion);
-            }
-
-            if (setupTrackingIdLookup)
-            {
-                appSettingsMock.Expect(mock => mock[UniversalAnalyticsEvent.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID])
-                    .Return(trackingId);
-            }
+                measurementProtocolVersion,
+                trackingId,
+                anonymousClientId,
+                eventCategory,
+                eventAction,
+                eventLabel,
+                eventValue);
+            return universalAnalyticsEvent;
         }
     }
 }
