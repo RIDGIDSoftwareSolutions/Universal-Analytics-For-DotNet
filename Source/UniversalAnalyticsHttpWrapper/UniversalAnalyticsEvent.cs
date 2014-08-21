@@ -27,6 +27,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// www.google.com/analytics/
         /// </summary>
         public const string APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID = "UniversalAnalytics.TrackingId";
+        internal const string EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE = "{0} cannot be null or whitespace";
 
         //TODO better to provide a constructor overload or to just use setter injection?
         internal IConfigurationManager configurationManager;
@@ -39,26 +40,7 @@ namespace UniversalAnalyticsHttpWrapper
         private string eventLabel;
         private string eventValue;
 
-        /// <summary>
-        /// This constructor expects an App Setting for 'UniversalAnalytics.Version' and 'UniversalAnalytics.TrackingId' 
-        /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
-        /// </summary>
-        /// <param name="anonymousClientId">Required. Anonymous client id for the event. 
-        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.</param>
-        /// <param name="eventCategory">Required. The event category for the event. 
-        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.</param>
-        /// <param name="eventAction">Required. The event action for the event. 
-        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.</param>
-        /// <param name="eventLabel">Optional. The event label for the event.
-        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.</param>
-        /// <param name="eventValue">Optional. The event value for the event.
-        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.</param>
-        /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
-        /// one of the required config attributes are missing.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
-        /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
-        /// other than a 200 OK response.</exception>
-        public UniversalAnalyticsEvent(
+        internal UniversalAnalyticsEvent(
             string anonymousClientId,
             string eventCategory,
             string eventAction,
@@ -132,17 +114,23 @@ namespace UniversalAnalyticsHttpWrapper
         {
             if (string.IsNullOrWhiteSpace(this.anonymousClientId))
             {
-                throw new ArgumentException("analyticsEvent.AnonymousClientId");
+                throw new ArgumentException(
+                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE, 
+                    "analyticsEvent.AnonymousClientId"));
             }
 
             if (string.IsNullOrWhiteSpace(this.eventCategory))
             {
-                throw new ArgumentException("analyticsEvent.Category");
+                throw new ArgumentException(
+                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                    "analyticsEvent.EventCategory"));
             }
 
             if (string.IsNullOrWhiteSpace(this.eventAction))
             {
-                throw new ArgumentException("analyticsEvent.Action");
+                throw new ArgumentException(
+                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                    "analyticsEvent.EventAction"));
             }
         }
 

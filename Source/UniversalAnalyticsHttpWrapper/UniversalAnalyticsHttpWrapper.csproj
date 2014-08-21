@@ -53,9 +53,11 @@
     <Compile Include="IGoogleDataSender.cs" />
     <Compile Include="IPostDataBuilder.cs" />
     <Compile Include="IUniversalAnalyticsEvent.cs" />
+    <Compile Include="IUniversalAnalyticsEventFactory.cs" />
     <Compile Include="PostDataBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UniversalAnalyticsEvent.cs" />
+    <Compile Include="UniversalAnalyticsEventFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
