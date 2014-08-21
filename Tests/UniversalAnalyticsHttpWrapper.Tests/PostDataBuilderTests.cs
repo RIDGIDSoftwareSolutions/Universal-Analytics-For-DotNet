@@ -17,7 +17,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     {
         private PostDataBuilder postDataBuilder;
         private IUniversalAnalyticsEvent analyticsEvent;
-        private string measurementProtocolVersion = "1";
         private string trackingId = "UA-52123335-1";
         private string anonymousClientId = "anonymous client id";
         private string eventCategory = "event category";
@@ -31,8 +30,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             postDataBuilder = new PostDataBuilder();
 
             analyticsEvent = MockRepository.GenerateMock<IUniversalAnalyticsEvent>();
-            analyticsEvent.Expect(mock => mock.MeasurementProtocolVersion)
-                .Return(measurementProtocolVersion);
             analyticsEvent.Expect(mock => mock.TrackingId)
                 .Return(trackingId);
             analyticsEvent.Expect(mock => mock.AnonymousClientId)
@@ -50,7 +47,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItPutsTheMeasurementProtocolVersionInTheString()
         {
-            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_VERSION, measurementProtocolVersion);
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_VERSION, EventTracker.MEASUREMENT_PROTOCOL_VERSION);
         }
 
         [Test]
@@ -95,7 +92,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             analyticsEvent.Expect(mock => mock.EventLabel)
                 .Return(null)
                 .Repeat.Any();
-            string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
+            string postData = postDataBuilder.BuildPostDataString(string.Empty, analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
 
@@ -114,7 +111,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             analyticsEvent.Expect(mock => mock.EventValue)
                 .Return(null)
                 .Repeat.Any();
-            string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
+            string postData = postDataBuilder.BuildPostDataString(string.Empty, analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
 
@@ -123,7 +120,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
         private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue)
         {
-            string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
+            string postData = postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
 

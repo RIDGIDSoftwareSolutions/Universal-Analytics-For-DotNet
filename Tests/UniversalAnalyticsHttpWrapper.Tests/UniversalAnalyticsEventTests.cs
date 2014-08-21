@@ -13,7 +13,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     [TestFixture]
     public class UniversalAnalyticsEventTests
     {
-        private string measurementProtocolVersion = "1";
         private string trackingId = "A-XXXXXX-YY";
         private string anonymousClientId = "anonymous client id";
         private string eventCategory = "event category";
@@ -22,42 +21,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         private string eventValue = "500";
 
         [Test]
-        public void ItThrowsAnArgumentExceptionIfTheMeasurementProtocolVersionIsWhitespace()
-        {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                "   ",
-                trackingId,
-                anonymousClientId,
-                eventCategory,
-                eventAction));
-
-            string expectedMessage = string.Format(
-                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                "analyticsEvent.MeasurementProtocolVersion");
-            Assert.AreEqual(expectedMessage, exception.Message);
-        }
-
-        [Test]
-        public void ItThrowsAnArgumentExceptionIfTheMeasurementProtocolVersionIsNull()
-        {
-            Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                null,
-                trackingId,
-                anonymousClientId,
-                eventCategory,
-                eventAction));
-
-            string expectedMessage = string.Format(
-                UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                "analyticsEvent.MeasurementProtocolVersion");
-            Assert.AreEqual(expectedMessage, exception.Message);
-        }
-
-        [Test]
         public void ItThrowsAnArgumentExceptionIfTheTrackingIdIsWhiteSpace()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 "   ",
                 anonymousClientId,
                 eventCategory,
@@ -73,7 +39,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsAnArgumentExceptionIfTheTrackingIdIsNull()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 null,
                 anonymousClientId,
                 eventCategory,
@@ -89,7 +54,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsWhiteSpace()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion, 
                 trackingId, 
                 "  ", 
                 eventCategory, 
@@ -105,7 +69,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsNull()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 null, 
                 eventCategory, 
@@ -116,15 +79,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 "analyticsEvent.AnonymousClientId");
             Assert.AreEqual(expectedMessage, exception.Message);
         }
-
-        [Test]
-        public void ItSetsTheMeasurementProtocolVersionInTheConstructor()
-        {
-            UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
-
-            Assert.AreEqual(measurementProtocolVersion, universalAnalyticsEvent.MeasurementProtocolVersion);
-        }
-
 
         [Test]
         public void ItSetsTheTrackingIdInTheConstructor()
@@ -146,7 +100,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsAnArgumentExceptionIfTheEventCategoryIsWhiteSpace()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 anonymousClientId, 
                 "  ", 
@@ -162,7 +115,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsAnArgumentExceptionIfTheEventCategoryIsNull()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 anonymousClientId, 
                 null, 
@@ -178,7 +130,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItSetsTheEventCategoryInTheConstructor()
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 anonymousClientId, 
                 eventCategory, 
@@ -191,7 +142,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsAnArgumentExceptionIfTheEventActionIsWhiteSpace()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 anonymousClientId,
                 eventCategory, 
@@ -207,7 +157,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsAnArgumentExceptionIfTheEventActionIsNull()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 anonymousClientId, 
                 eventCategory, 
@@ -220,18 +169,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
-        public void ItSetsTheMeasurementProtocolVersionTheConstructor()
-        {
-            UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
-
-            Assert.AreEqual(measurementProtocolVersion, universalAnalyticsEvent.MeasurementProtocolVersion);
-        }
-
-        [Test]
         public void ItSetsEventActionInTheConstructor()
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 anonymousClientId, 
                 eventCategory, 
@@ -244,7 +184,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItSetsEventLabelInTheConstructor()
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId, 
                 anonymousClientId, 
                 eventCategory, 
@@ -258,7 +197,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItSetsEventValueInTheConstructor()
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId,
                 anonymousClientId, 
                 eventCategory, 
@@ -272,7 +210,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         private UniversalAnalyticsEvent GetFullyPopulatedEventUsingConstructor()
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId,
                 anonymousClientId,
                 eventCategory,

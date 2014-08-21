@@ -14,11 +14,6 @@ namespace UniversalAnalyticsHttpWrapper
     public class UniversalAnalyticsEventFactory : IUniversalAnalyticsEventFactory
     {
         /// <summary>
-        /// This key is required in the .config. The Version will only change when the Measurement Protocol
-        /// has breaking changes. If that happens, the code in this package may need to be updated.
-        /// </summary>
-        public const string APP_KEY_UNIVERSAL_ANALYTICS_VERSION = "UniversalAnalytics.Version";
-        /// <summary>
         /// This key is required in the .config. Find this value from your Universal Analytics property that was set up on
         /// www.google.com/analytics/
         /// </summary>
@@ -26,6 +21,9 @@ namespace UniversalAnalyticsHttpWrapper
 
         private IConfigurationManager configurationManager;
 
+        /// <summary>
+        /// Default constructor. Could be a singleton but this is easier for the average developer to consume
+        /// </summary>
         public UniversalAnalyticsEventFactory()
         {
             this.configurationManager = new ConfigurationManager();
@@ -37,7 +35,7 @@ namespace UniversalAnalyticsHttpWrapper
         }
 
         /// <summary>
-        /// This constructor expects an App Setting for 'UniversalAnalytics.Version' and 'UniversalAnalytics.TrackingId' 
+        /// This constructor expects an App Setting for 'UniversalAnalytics.TrackingId' 
         /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
         /// </summary>
         /// <param name="anonymousClientId">Required. Anonymous client id for the event. 
@@ -62,11 +60,9 @@ namespace UniversalAnalyticsHttpWrapper
             string eventLabel = null, 
             string eventValue = null) 
         {
-            string measurementProtocolVersion = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_VERSION);
             string trackingId = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
 
             return new UniversalAnalyticsEvent(
-                measurementProtocolVersion,
                 trackingId,
                 anonymousClientId,
                 eventCategory,

@@ -39,7 +39,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItReturnsANewUniversalAnalyticsEvent()
         {
-            SetupMocksForConfigCalls(true, true);
+            SetupMockForGettingTrackingIdFromConfig(true);
             IUniversalAnalyticsEvent analyticsEvent = factory.MakeUniversalAnalyticsEvent(
                 anonymousClientId,
                 eventCategory,
@@ -48,7 +48,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 eventValue);
 
             //generally prefer to have a separate test for each case but this will do just fine.
-            Assert.AreEqual(measurementProtocolVersion, analyticsEvent.MeasurementProtocolVersion);
             Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
             Assert.AreEqual(anonymousClientId, analyticsEvent.AnonymousClientId);
             Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
@@ -58,25 +57,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
-        public void ItThrowsAConfigEntryMissingExceptionIfTheVersionIsntSetInTheConfig()
-        {
-            SetupMocksForConfigCalls(false, true);
-            ConfigEntryMissingException expectedException = new ConfigEntryMissingException(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_VERSION);
-
-            ConfigEntryMissingException exception = Assert.Throws<ConfigEntryMissingException>(() => factory.MakeUniversalAnalyticsEvent(
-                anonymousClientId,
-                eventCategory,
-                eventAction,
-                eventLabel,
-                eventValue));
-
-            Assert.AreEqual(expectedException.Message, exception.Message);
-        }
-
-        [Test]
         public void ItThrowsAConfigEntryMissingExceptionIfTheTrackingIdIsntSetInTheConfig()
         {
-            SetupMocksForConfigCalls(true, false);
+            SetupMockForGettingTrackingIdFromConfig(false);
             ConfigEntryMissingException expectedException = new ConfigEntryMissingException(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
 
             ConfigEntryMissingException exception = Assert.Throws<ConfigEntryMissingException>(() => factory.MakeUniversalAnalyticsEvent(
@@ -89,14 +72,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Assert.AreEqual(expectedException.Message, exception.Message);
         }
 
-        private void SetupMocksForConfigCalls(bool setupVersionLookup, bool setupTrackingIdLookup)
+        private void SetupMockForGettingTrackingIdFromConfig(bool setupTrackingIdLookup)
         {
-            if (setupVersionLookup)
-            {
-                appSettingsMock.Expect(mock => mock[UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_VERSION])
-                    .Return(measurementProtocolVersion);
-            }
-
             if (setupTrackingIdLookup)
             {
                 appSettingsMock.Expect(mock => mock[UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID])

@@ -9,7 +9,7 @@ namespace UniversalAnalyticsHttpWrapper
 {
     /// <summary>
     /// An object which represents a Universal Analytics Event that will be pushed via the Measurement Protocol. Expects
-    /// an App Setting for 'UniversalAnalytics.Version' and 'UniversalAnalytics.TrackingId' in the config. 
+    /// an App Setting for 'UniversalAnalytics.TrackingId' in the config. 
     /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#events
     /// for more details on the primary fields for an event.
     /// </summary>
@@ -19,7 +19,6 @@ namespace UniversalAnalyticsHttpWrapper
     {
         internal const string EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE = "{0} cannot be null or whitespace";
 
-        private string measurementProtocolVersion;
         private string trackingId;
         private string anonymousClientId;
         private string eventCategory;
@@ -27,10 +26,6 @@ namespace UniversalAnalyticsHttpWrapper
         private string eventLabel;
         private string eventValue;
 
-        /// <param name="measurementProtocolVersion">Required. The measurement protocol version of the service.
-        /// If you don't want to pass this every time, set the UniversalAnalytics.Version app setting and use the
-        /// UniversalAnalyticsEventFactory to get instances of this class.
-        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#v for details.</param>
         /// <param name="param name="trackingId"">Required. The universal analytics tracking id for the property 
         /// that events will be logged to. If you don't want to pass this every time, set the UniversalAnalytics.TrackingId 
         /// app setting and use the UniversalAnalyticsEventFactory to get instances of this class.
@@ -51,7 +46,6 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
         public UniversalAnalyticsEvent(
-            string measurementProtocolVersion,
             string trackingId,
             string anonymousClientId,
             string eventCategory,
@@ -59,7 +53,6 @@ namespace UniversalAnalyticsHttpWrapper
             string eventLabel = null,
             string eventValue = null)
         {
-            this.measurementProtocolVersion = measurementProtocolVersion;
             this.trackingId = trackingId;
             this.anonymousClientId = anonymousClientId;
             this.eventCategory = eventCategory;
@@ -70,10 +63,6 @@ namespace UniversalAnalyticsHttpWrapper
             ValidateRequiredFields();
         }
 
-        /// <summary>
-        /// Gets the measurement protocol version that was passed in when the object was constructed
-        /// </summary>
-        public string MeasurementProtocolVersion { get { return this.measurementProtocolVersion; } }
         /// <summary>
         /// Gets the tracking id for the Universal Analytics property
         /// </summary>
@@ -101,13 +90,6 @@ namespace UniversalAnalyticsHttpWrapper
 
         private void ValidateRequiredFields()
         {
-            if (string.IsNullOrWhiteSpace(this.measurementProtocolVersion))
-            {
-                throw new ArgumentException(
-                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                    "analyticsEvent.MeasurementProtocolVersion"));
-            }
-
             if (string.IsNullOrWhiteSpace(this.trackingId))
             {
                 throw new ArgumentException(

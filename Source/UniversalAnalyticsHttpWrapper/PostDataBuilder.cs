@@ -22,10 +22,10 @@ namespace UniversalAnalyticsHttpWrapper
         internal const string PARAMETER_KEY_EVENT_VALUE = "ev";
         internal const string HIT_TYPE_EVENT = "event";
 
-        public string BuildPostDataString(IUniversalAnalyticsEvent analyticsEvent)
+        public string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent)
         {
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(string.Empty);
-            nameValueCollection[PARAMETER_KEY_VERSION] = analyticsEvent.MeasurementProtocolVersion;
+            nameValueCollection[PARAMETER_KEY_VERSION] = measurementProtocolVersion;
             nameValueCollection[PARAMETER_KEY_TRACKING_ID] = analyticsEvent.TrackingId;
             nameValueCollection[PARAMETER_KEY_ANONYMOUS_CLIENT_ID] = analyticsEvent.AnonymousClientId;
             nameValueCollection[PARAMETER_KEY_HIT_TYPE] = HitTypeEnum.@event.ToString();

@@ -16,9 +16,13 @@ namespace UniversalAnalyticsHttpWrapper
         private IPostDataBuilder postDataBuilder;
         private IGoogleDataSender googleDataSender;
         /// <summary>
-        /// This is the current Google collection URI for the measurement protocol, as of 2014-08-17
+        /// This is the current Google collection URI for version 1 of the measurement protocol
         /// </summary>
         public static readonly Uri GOOGLE_COLLECTION_URI = new Uri("http://www.google-analytics.com/collect");
+        /// <summary>
+        /// This assembly is built to work with this version of the measurement protocol.
+        /// </summary>
+        public const string MEASUREMENT_PROTOCOL_VERSION = "1";
 
         /// <summary>
         /// This constructor will create all of the appropriate default implementations.
@@ -46,7 +50,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <param name="analyticsEvent">The event to be logged.</param>
         public void TrackEvent(IUniversalAnalyticsEvent analyticsEvent)
         {
-            string postData = postDataBuilder.BuildPostDataString(analyticsEvent);
+            string postData = postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
 
             googleDataSender.SendData(GOOGLE_COLLECTION_URI, postData);
         }

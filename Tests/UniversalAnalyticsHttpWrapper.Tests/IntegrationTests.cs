@@ -46,11 +46,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             IEventTracker eventTracker = new EventTracker();
             //create a new event to pass to the event tracker
             IUniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEvent(
-                //Required. The measurement protocol version of the collection service.
-                // If you don't want to pass this every time, set the UniversalAnalytics.Version app setting and use the
-                // UniversalAnalyticsEventFactory to get instances of this class.
-                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#v for details.
-                "1",
                 //Required. The universal analytics tracking id for the property 
                 // that events will be logged to. If you don't want to pass this every time, set the UniversalAnalytics.TrackingId 
                 // app setting and use the UniversalAnalyticsEventFactory to get instances of this class.

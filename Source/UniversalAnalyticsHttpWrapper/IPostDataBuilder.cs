@@ -7,6 +7,6 @@ namespace UniversalAnalyticsHttpWrapper
 {
     internal interface IPostDataBuilder
     {
-        string BuildPostDataString(IUniversalAnalyticsEvent analyticsEvent);
+        string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent);
     }
 }

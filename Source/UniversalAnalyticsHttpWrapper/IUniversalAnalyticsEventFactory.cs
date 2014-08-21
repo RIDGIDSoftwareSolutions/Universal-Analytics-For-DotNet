@@ -12,7 +12,7 @@ namespace UniversalAnalyticsHttpWrapper
     public interface IUniversalAnalyticsEventFactory
     {
         /// <summary>
-        /// This constructor expects an App Setting for 'UniversalAnalytics.Version' and 'UniversalAnalytics.TrackingId' 
+        /// This constructor expects an App Setting for 'UniversalAnalytics.TrackingId' 
         /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
         /// </summary>
         /// <param name="anonymousClientId">Required. Anonymous client id for the event. 

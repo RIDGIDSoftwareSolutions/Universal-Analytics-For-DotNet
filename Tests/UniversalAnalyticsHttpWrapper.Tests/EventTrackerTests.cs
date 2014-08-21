@@ -35,7 +35,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             string expectedPostData = "some amazing string that matches what google requires";
             
-            postDataBuilderMock.Expect(mock => mock.BuildPostDataString(Arg<UniversalAnalyticsEvent>.Is.Anything))
+            postDataBuilderMock.Expect(mock => mock.BuildPostDataString(Arg<string>.Is.Anything, Arg<UniversalAnalyticsEvent>.Is.Anything))
                 .Return(expectedPostData);
 
             eventTracker.TrackEvent(analyticsEvent);

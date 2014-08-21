@@ -8,10 +8,6 @@ namespace UniversalAnalyticsHttpWrapper
     public interface IUniversalAnalyticsEvent
     {
         /// <summary>
-        /// Gets the measurement protocol version for this event.
-        /// </summary>
-        string MeasurementProtocolVersion { get; }
-        /// <summary>
         /// Gets the tracking id this event.
         /// </summary>
         string TrackingId { get; }
