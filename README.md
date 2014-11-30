@@ -26,6 +26,10 @@ IUniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEvent(
 eventTracker.TrackEvent(analyticsEvent);
 ```
 
+The code is almost entirely unit/integration tested so it should be stable and easily updatable. I'm using it on my own site right now so you can find more specific examples at: https://github.com/jakejgordon/NemeStats 
+
+For your own application you will probably want to create an additional wrapper over top of this so you can confine the EventCategory and EventAction values to something that makes sense for your own app (without having to hard-code magic strings for the parameters). My website has examples of this as well.
+
 ![Alt text](https://raw.githubusercontent.com/jakejgordon/Universal-Analytics-For-DotNet/master/universal_analytics_realtime_events_screenshot.jpg?raw=true "Screenshot of Real-Time Events After Pushing Data")
 
-The code is almost entirely unit testing so it should be stable and easily updatable.
+
