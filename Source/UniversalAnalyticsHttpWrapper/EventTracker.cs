@@ -13,8 +13,8 @@ namespace UniversalAnalyticsHttpWrapper
     /// </summary>
     public class EventTracker : IEventTracker
     {
-        private IPostDataBuilder postDataBuilder;
-        private IGoogleDataSender googleDataSender;
+        private readonly IPostDataBuilder postDataBuilder;
+        private readonly IGoogleDataSender googleDataSender;
         /// <summary>
         /// This is the current Google collection URI for version 1 of the measurement protocol
         /// </summary>

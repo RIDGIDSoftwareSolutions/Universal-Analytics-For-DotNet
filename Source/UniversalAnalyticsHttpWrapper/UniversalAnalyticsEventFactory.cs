@@ -19,7 +19,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public const string APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID = "UniversalAnalytics.TrackingId";
 
-        private IConfigurationManager configurationManager;
+        private readonly IConfigurationManager configurationManager;
 
         /// <summary>
         /// Default constructor. Could be a singleton but this is easier for the average developer to consume
@@ -57,7 +57,7 @@ namespace UniversalAnalyticsHttpWrapper
             string anonymousClientId, 
             string eventCategory, 
             string eventAction, 
-            string eventLabel = null, 
+            string eventLabel, 
             string eventValue = null) 
         {
             string trackingId = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);

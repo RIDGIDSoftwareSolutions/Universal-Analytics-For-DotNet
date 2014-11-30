@@ -10,7 +10,7 @@ namespace UniversalAnalyticsHttpWrapper.Exceptions
     {
         internal const string EXCEPTION_MESSAGE_FORMAT = "No app setting could be found for '{0}'.";
 
-        private string appKeyForMissingSetting;
+        private readonly string appKeyForMissingSetting;
 
         internal ConfigEntryMissingException(string appKeyForMissingSetting)
         {

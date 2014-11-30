@@ -12,7 +12,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     [TestFixture]
     public class IntegrationTests
     {
-        private UniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory(new ConfigurationManager());
+        private readonly UniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory(new ConfigurationManager());
 
         [Test, Ignore("Integration tests.")]
         public void SampleCodeForGitHubReadMeUsingFactoryToGetEventObject()
@@ -101,13 +101,15 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             IUniversalAnalyticsEvent analyticsEventForUser1 = eventFactory.MakeUniversalAnalyticsEvent(
                     "test user 1",
                     "rate limit test category",
-                    "rate limit test action");
+                    "rate limit test action",
+                    "rate limit test lable");
             eventTracker.TrackEvent(analyticsEventForUser1);
 
             IUniversalAnalyticsEvent analyticsEventForUser2 = eventFactory.MakeUniversalAnalyticsEvent(
                 "test user 2",
                 "test category",
-                "test action");
+                "test action",
+                "test label");
             eventTracker.TrackEvent(analyticsEventForUser2);
         }
     }

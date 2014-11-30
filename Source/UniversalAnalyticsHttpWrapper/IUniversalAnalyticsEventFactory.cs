@@ -34,7 +34,7 @@ namespace UniversalAnalyticsHttpWrapper
             string anonymousClientId,
             string eventCategory,
             string eventAction,
-            string eventLabel = null,
+            string eventLabel,
             string eventValue = null);
     }
 }

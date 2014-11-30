@@ -19,12 +19,12 @@ namespace UniversalAnalyticsHttpWrapper
     {
         internal const string EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE = "{0} cannot be null or whitespace";
 
-        private string trackingId;
-        private string anonymousClientId;
-        private string eventCategory;
-        private string eventAction;
-        private string eventLabel;
-        private string eventValue;
+        private readonly string trackingId;
+        private readonly string anonymousClientId;
+        private readonly string eventCategory;
+        private readonly string eventAction;
+        private readonly string eventLabel;
+        private readonly string eventValue;
 
         /// <param name="param name="trackingId"">Required. The universal analytics tracking id for the property 
         /// that events will be logged to. If you don't want to pass this every time, set the UniversalAnalytics.TrackingId 
