@@ -27,7 +27,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 "   ",
                 anonymousClientId,
                 eventCategory,
-                eventAction));
+                eventAction,
+                eventLabel));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -42,7 +43,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 null,
                 anonymousClientId,
                 eventCategory,
-                eventAction));
+                eventAction,
+                eventLabel));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -56,8 +58,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
                 "  ", 
-                eventCategory, 
-                eventAction));
+                eventCategory,
+                eventAction,
+                eventLabel));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -71,8 +74,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
                 null, 
-                eventCategory, 
-                eventAction));
+                eventCategory,
+                eventAction,
+                eventLabel));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -102,8 +106,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
                 anonymousClientId, 
-                "  ", 
-                eventAction));
+                "  ",
+                eventAction,
+                eventLabel));
             
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE, 
@@ -117,8 +122,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
                 anonymousClientId, 
-                null, 
-                eventAction));
+                null,
+                eventAction,
+                eventLabel));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -132,8 +138,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
                 anonymousClientId, 
-                eventCategory, 
-                eventAction);
+                eventCategory,
+                eventAction,
+                eventLabel);
 
             Assert.AreEqual(eventCategory, universalAnalyticsEvent.EventCategory);
         }
@@ -144,8 +151,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
                 anonymousClientId,
-                eventCategory, 
-                "  "));
+                eventCategory,
+                "  ",
+                eventLabel));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -159,8 +167,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
                 anonymousClientId, 
-                eventCategory, 
-                null));
+                eventCategory,
+                null,
+                eventLabel));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -174,8 +183,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
                 anonymousClientId, 
-                eventCategory, 
-                eventAction);
+                eventCategory,
+                eventAction,
+                eventLabel);
 
             Assert.AreEqual(eventAction, universalAnalyticsEvent.EventAction);
         }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration.Abstractions;
 using System.Linq;
-using System.Text;
-using UniversalAnalyticsHttpWrapper.Exceptions;
 
 namespace UniversalAnalyticsHttpWrapper
 {
@@ -26,7 +22,7 @@ namespace UniversalAnalyticsHttpWrapper
         private readonly string eventLabel;
         private readonly string eventValue;
 
-        /// <param name="param name="trackingId"">Required. The universal analytics tracking id for the property 
+        /// <param name="trackingId">Required. The universal analytics tracking id for the property 
         /// that events will be logged to. If you don't want to pass this every time, set the UniversalAnalytics.TrackingId 
         /// app setting and use the UniversalAnalyticsEventFactory to get instances of this class.
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#tid for details.</param>
@@ -50,7 +46,7 @@ namespace UniversalAnalyticsHttpWrapper
             string anonymousClientId,
             string eventCategory,
             string eventAction,
-            string eventLabel = null,
+            string eventLabel,
             string eventValue = null)
         {
             this.trackingId = trackingId;
@@ -66,27 +62,50 @@ namespace UniversalAnalyticsHttpWrapper
         /// <summary>
         /// Gets the tracking id for the Universal Analytics property
         /// </summary>
-        public string TrackingId { get { return this.trackingId; } }
+        public string TrackingId
+        {
+            get { return this.trackingId; }
+        }
+
         /// <summary>
         /// Gets the anonymousClientId that was passed in when the object was constructed.
         /// </summary>
-        public string AnonymousClientId { get { return this.anonymousClientId; } }
+        public string AnonymousClientId
+        {
+            get { return this.anonymousClientId; }
+        }
+
         /// <summary>
         /// Gets the eventCategory that was passed in when the object was constructed.
         /// </summary>
-        public string EventCategory { get { return this.eventCategory; } }
+        public string EventCategory
+        {
+            get { return this.eventCategory; }
+        }
+
         /// <summary>
         /// Gets the eventAction that was passed in when the object was constructed.
         /// </summary>
-        public string EventAction { get { return this.eventAction; } }
+        public string EventAction
+        {
+            get { return this.eventAction; }
+        }
+
         /// <summary>
         /// Gets the eventLabel that was passed in when the object was constructed.
         /// </summary>
-        public string EventLabel { get { return this.eventLabel; } }
+        public string EventLabel
+        {
+            get { return this.eventLabel; }
+        }
+
         /// <summary>
         /// Gets the eventValue that was passed in when the object was constructed.
         /// </summary>
-        public string EventValue { get { return this.eventValue; } }
+        public string EventValue
+        {
+            get { return this.eventValue; }
+        }
 
         private void ValidateRequiredFields()
         {
@@ -94,28 +113,28 @@ namespace UniversalAnalyticsHttpWrapper
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                    "analyticsEvent.TrackingId"));
+                                  "analyticsEvent.TrackingId"));
             }
 
             if (string.IsNullOrWhiteSpace(this.anonymousClientId))
             {
                 throw new ArgumentException(
-                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE, 
-                    "analyticsEvent.AnonymousClientId"));
+                    string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
+                                  "analyticsEvent.AnonymousClientId"));
             }
 
             if (string.IsNullOrWhiteSpace(this.eventCategory))
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                    "analyticsEvent.EventCategory"));
+                                  "analyticsEvent.EventCategory"));
             }
 
             if (string.IsNullOrWhiteSpace(this.eventAction))
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                    "analyticsEvent.EventAction"));
+                                  "analyticsEvent.EventAction"));
             }
         }
     }
