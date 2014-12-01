@@ -17,7 +17,7 @@ IUniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEvent(
     //Required. The event action for the event. 
     //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
     "test action",
-    //Optional. The event label for the event.
+    //The event label for the event.
     // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
     "test label",
     //Optional. The event value for the event.
