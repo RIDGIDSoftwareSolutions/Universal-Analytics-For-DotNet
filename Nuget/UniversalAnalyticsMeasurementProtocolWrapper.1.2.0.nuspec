@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+    <metadata>
+        <id>UniversalAnalyticsMeasurementProtocolWrapper</id>
+        <version>1.2.0</version>
+        <title>Universal Analytics Measurement Protocol .NET Wrapper</title>
+        <authors>jakejgordon</authors>
+        <owners>jakejgordon</owners>
+        <licenseUrl>https://github.com/jakejgordon/Universal-Analytics-For-DotNet/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/jakejgordon/Universal-Analytics-For-DotNet</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/jakejgordon/Universal-Analytics-For-DotNet/master/universal_analytics_measurent_protocol_wrapper_logo.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Wrapper for pushing data to Universal Analytics properties via the Measurement Protocol (version 1) on the server-side. This version only supports pushing Event data to web properties.</description>
+        <summary>Wrapper for pushing data to Universal Analytics properties via the Measurement Protocol on the server-side. This version only supports pushing Event data to web properties.</summary>
+        <releaseNotes>Major overhaul to the interfaces. Provided a factory for getting IUniversalAnalyticsEvent objects, and eliminated one of the required app settings.</releaseNotes>
+        <copyright>jakejgordon 2014</copyright>
+        <language>en-US</language>
+        <tags>UniversalAnalytics Analytics MeasurementProtocol GoogleAnalytics</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5.1">
+                <dependency id="System.Configuration.Abstractions" version="2.0.2.15" />
+            </group>
+        </dependencies>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Configuration" targetFramework="" />
+            <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Data" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Data.DataSetExtensions" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Web" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Xml" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="" />
+        </frameworkAssemblies>
+        <references>
+            <group targetFramework=".NETFramework4.5.1">
+                <reference file="UniversalAnalyticsHttpWrapper.dll" />
+                <reference file="System.Configuration.Abstractions.dll" />
+            </group>
+        </references>
+    </metadata>
+    <files>
+        <file src="lib\net40\System.Configuration.Abstractions.dll" target="lib\net40\System.Configuration.Abstractions.dll" />
+        <file src="lib\net40\UniversalAnalyticsHttpWrapper.dll" target="lib\net40\UniversalAnalyticsHttpWrapper.dll" />
+        <file src="lib\net40\UniversalAnalyticsHttpWrapper.XML" target="lib\net40\UniversalAnalyticsHttpWrapper.XML" />
+    </files>
+</package>
