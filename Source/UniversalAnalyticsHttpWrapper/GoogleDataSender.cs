@@ -17,7 +17,7 @@ namespace UniversalAnalyticsHttpWrapper
             httpRequest.Method = "POST";
             using(Stream requestStream = httpRequest.GetRequestStream())
             {
-                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                using (var writer = new StreamWriter(requestStream))
                 {
                     writer.Write(postData);
                 }
