@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Configuration.Abstractions;
 using UniversalAnalyticsHttpWrapper.Exceptions;
 
@@ -53,6 +54,17 @@ namespace UniversalAnalyticsHttpWrapper
             string postData = postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
 
             googleDataSender.SendData(GOOGLE_COLLECTION_URI, postData);
+        }
+
+        /// <summary>
+        /// Pushes an event up to the Universal Analytics web property specified in the .config file.
+        /// </summary>
+        /// <param name="analyticsEvent">The event to be logged.</param>
+        public async Task TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent)
+        {
+            string postData = postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+
+            await googleDataSender.SendDataAsync(GOOGLE_COLLECTION_URI, postData);
         }
     }
 }
