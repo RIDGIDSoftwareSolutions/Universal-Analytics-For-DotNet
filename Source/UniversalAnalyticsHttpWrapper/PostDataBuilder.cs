@@ -24,6 +24,23 @@ namespace UniversalAnalyticsHttpWrapper
 
         public string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent)
         {
+            var postData = BuildPostData(measurementProtocolVersion, analyticsEvent);
+            return postData.ToString();
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> BuildPostDataCollection(
+            string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent)
+        {
+            var postData = BuildPostData(measurementProtocolVersion, analyticsEvent);
+            var collection = postData.AllKeys.SelectMany(
+                postData.GetValues,
+                (key, value) => new KeyValuePair<string, string>(key, value));
+
+            return collection;
+        }
+
+        internal NameValueCollection BuildPostData(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent)
+        {
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(string.Empty);
             nameValueCollection[PARAMETER_KEY_VERSION] = measurementProtocolVersion;
             nameValueCollection[PARAMETER_KEY_TRACKING_ID] = analyticsEvent.TrackingId;
@@ -42,7 +59,7 @@ namespace UniversalAnalyticsHttpWrapper
                 nameValueCollection[PARAMETER_KEY_EVENT_VALUE] = analyticsEvent.EventValue;
             }
 
-            return nameValueCollection.ToString();
+            return nameValueCollection;
         }
 
         /// <summary>

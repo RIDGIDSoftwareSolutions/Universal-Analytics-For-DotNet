@@ -62,7 +62,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <param name="analyticsEvent">The event to be logged.</param>
         public async Task TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent)
         {
-            string postData = postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+            var postData = postDataBuilder.BuildPostDataCollection(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
 
             await googleDataSender.SendDataAsync(GOOGLE_COLLECTION_URI, postData);
         }

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -14,7 +15,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     {
         private GoogleDataSender googleDataSender;
         private Uri dataCollectionUri = EventTracker.GOOGLE_COLLECTION_URI;
-        private string postData = "the data being posted";
+        private IEnumerable<KeyValuePair<string, string>> postDataCollection = new List<KeyValuePair<string, string>>();
+        private string postDataString = "the data being posted";
 
         [SetUp]
         public void SetUp()
@@ -32,7 +34,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItSendsTheRequestWithoutThrowingExceptions()
         {
             Assert.DoesNotThrow(() => {
-                googleDataSender.SendData(dataCollectionUri, postData);
+                googleDataSender.SendData(dataCollectionUri, postDataString);
             });
         }
 
@@ -40,7 +42,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItSendsTheAsyncRequestWithoutThrowingExceptions()
         {
             Assert.DoesNotThrow(async () => {
-                await googleDataSender.SendDataAsync(dataCollectionUri, postData);
+                await googleDataSender.SendDataAsync(dataCollectionUri, postDataCollection);
             });
         }
 
@@ -56,7 +58,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsExceptionIfAsyncRequestBodyEmpty()
         {
             Assert.Throws<ArgumentNullException>(async () => {
-                await googleDataSender.SendDataAsync(dataCollectionUri, string.Empty);
+                await googleDataSender.SendDataAsync(
+                    dataCollectionUri, default(IEnumerable<KeyValuePair<string, string>>));
             });
         }
     }

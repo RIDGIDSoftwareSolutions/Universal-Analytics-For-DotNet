@@ -35,28 +35,36 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             string expectedPostData = "some amazing string that matches what google requires";
             
-            postDataBuilderMock.Expect(mock => mock.BuildPostDataString(Arg<string>.Is.Anything, Arg<UniversalAnalyticsEvent>.Is.Anything))
+            postDataBuilderMock.Expect(mock => mock.BuildPostDataString(
+                    Arg<string>.Is.Anything,
+                    Arg<UniversalAnalyticsEvent>.Is.Anything))
                 .Return(expectedPostData);
 
             eventTracker.TrackEvent(analyticsEvent);
 
-            googleDataSenderMock.AssertWasCalled(mock => mock.SendData(EventTracker.GOOGLE_COLLECTION_URI, expectedPostData));
+            googleDataSenderMock.AssertWasCalled(mock => 
+                mock.SendData(EventTracker.GOOGLE_COLLECTION_URI, expectedPostData));
         }
 
         [Test]
         public async Task ItSendsTheDataToGoogleAsync()
         {
-            string expectedPostData = "some amazing string that matches what google requires";
+            var expectedPostData = new List<KeyValuePair<string, string>>();
 
-            postDataBuilderMock.Expect(mock => mock.BuildPostDataString(Arg<string>.Is.Anything, Arg<UniversalAnalyticsEvent>.Is.Anything))
+            postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
+                    Arg<string>.Is.Anything,
+                    Arg<UniversalAnalyticsEvent>.Is.Anything))
                 .Return(expectedPostData);
 
-            googleDataSenderMock.Expect(mock => mock.SendDataAsync(Arg<Uri>.Is.Anything, Arg<string>.Is.Anything))
+            googleDataSenderMock.Expect(mock => mock.SendDataAsync(
+                    Arg<Uri>.Is.Anything,
+                    Arg<IEnumerable<KeyValuePair<string, string>>>.Is.Anything))
                 .Return(Task.FromResult(0));
             
             await eventTracker.TrackEventAsync(analyticsEvent);
 
-            googleDataSenderMock.AssertWasCalled(mock => mock.SendDataAsync(EventTracker.GOOGLE_COLLECTION_URI, expectedPostData));
+            googleDataSenderMock.AssertWasCalled(mock =>
+                mock.SendDataAsync(EventTracker.GOOGLE_COLLECTION_URI, expectedPostData));
         }
     }
 }
