@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
@@ -113,13 +114,15 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
         private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue)
         {
-            string postData = postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+            string postDataString = postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
 
-            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
-
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postDataString);
             string actualValue = nameValueCollection[key];
-
             Assert.AreEqual(expectedValue, actualValue);
+
+            var postDataCollection = postDataBuilder.BuildPostDataCollection(EventTracker.MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+            string actualCollectionValue = postDataCollection.Single(s => s.Key == key).Value;
+            Assert.AreEqual(expectedValue, actualCollectionValue);
         }
     }
 }

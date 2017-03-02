@@ -4,7 +4,7 @@ using System.Configuration.Abstractions;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
 {
-    [TestFixture/*, Ignore("Integration tests.")*/]
+    [TestFixture, Ignore("Integration tests.")]
     public class IntegrationTests
     {
         private readonly UniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory(new ConfigurationManager());
