@@ -18,7 +18,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <summary>
         /// This is the current Google collection URI for version 1 of the measurement protocol
         /// </summary>
-        public static readonly Uri GOOGLE_COLLECTION_URI = new Uri("http://www.google-analytics.com/collect");
+        public static readonly Uri GOOGLE_COLLECTION_URI = new Uri("https://www.google-analytics.com/collect");
         /// <summary>
         /// This assembly is built to work with this version of the measurement protocol.
         /// </summary>
