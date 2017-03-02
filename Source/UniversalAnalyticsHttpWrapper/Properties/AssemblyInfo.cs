@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("jakejgordon")]
 [assembly: AssemblyProduct("UniversalAnalyticsHttpWrapper")]
-[assembly: AssemblyCopyright("Copyright © jakejgordon 2014")]
+[assembly: AssemblyCopyright("Copyright © jakejgordon 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

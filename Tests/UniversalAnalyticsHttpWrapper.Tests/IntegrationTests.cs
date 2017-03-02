@@ -1,26 +1,21 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Configuration.Abstractions;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
 {
-    [TestFixture]
+    [TestFixture/*, Ignore("Integration tests.")*/]
     public class IntegrationTests
     {
         private readonly UniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory(new ConfigurationManager());
 
-        [Test, Ignore("Integration tests.")]
+        [Test]
         public void SampleCodeForGitHubReadMeUsingFactoryToGetEventObject()
         {
             //create a new EventTracker
             IEventTracker eventTracker = new EventTracker();
             //create a new event to pass to the event tracker
-            IUniversalAnalyticsEvent analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+            var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                 //Required. Anonymous client id. 
                 //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
                 "developer",
@@ -39,7 +34,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             eventTracker.TrackEvent(analyticsEvent);
         }
 
-        [Test, Ignore("Integration tests.")]
+        [Test]
         public void SampleCodeForGitHubReadMeManuallyConstructingEventObject()
         {
             //create a new EventTracker
@@ -69,16 +64,16 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             eventTracker.TrackEvent(analyticsEvent);
         }
 
-        [Test, Ignore("Integration tests.")]
+        [Test]
         public void Send100EventsAsQuicklyAsPossibleAndARateLimitStillWontOccur()
         {
-            EventTracker eventTracker = new EventTracker();
+            var eventTracker = new EventTracker();
 
-            for (int i = 1; i <= 100; i++)
+            for (var i = 1; i <= 100; i++)
             {
                 try
                 {
-                    IUniversalAnalyticsEvent analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+                    var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
                          "rate limit test user",
                          "rate limit test category",
                          "rate limit test action",
@@ -92,20 +87,20 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             }
         }
 
-        [Test, Ignore("Integration tests.")]
+        [Test]
         public void SendingEventsFromTwoDifferentUsersShowsUpAsTwoActiveSessionsInUniversalAnalytics()
         {
             //you actually have to watch the analytics property to see this one happening. No assertion necessary.
-            EventTracker eventTracker = new EventTracker();
+            var eventTracker = new EventTracker();
 
-            IUniversalAnalyticsEvent analyticsEventForUser1 = eventFactory.MakeUniversalAnalyticsEvent(
+            var analyticsEventForUser1 = eventFactory.MakeUniversalAnalyticsEvent(
                     "test user 1",
                     "rate limit test category",
                     "rate limit test action",
                     "rate limit test lable");
             eventTracker.TrackEvent(analyticsEventForUser1);
 
-            IUniversalAnalyticsEvent analyticsEventForUser2 = eventFactory.MakeUniversalAnalyticsEvent(
+            var analyticsEventForUser2 = eventFactory.MakeUniversalAnalyticsEvent(
                 "test user 2",
                 "test category",
                 "test action",

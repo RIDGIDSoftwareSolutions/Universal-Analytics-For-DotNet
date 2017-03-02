@@ -1,14 +1,5 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Configuration.Abstractions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UniversalAnalyticsHttpWrapper;
-using UniversalAnalyticsHttpWrapper.Exceptions;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
 {
