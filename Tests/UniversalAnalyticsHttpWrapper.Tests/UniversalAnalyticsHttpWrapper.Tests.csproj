@@ -41,10 +41,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Abstractions, Version=2.0.2.26, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\Source\UniversalAnalyticsHttpWrapper\packages\System.Configuration.Abstractions.2.0.2.26\lib\net45\System.Configuration.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -54,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationManagerWrapperTests.cs" />
     <Compile Include="EventTrackerTests.cs" />
     <Compile Include="GoogleDataSenderTests.cs" />
     <Compile Include="IntegrationTests.cs" />

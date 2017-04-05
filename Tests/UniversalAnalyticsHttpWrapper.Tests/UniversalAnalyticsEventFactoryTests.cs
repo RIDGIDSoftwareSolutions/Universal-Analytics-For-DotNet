@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
-using System.Configuration.Abstractions;
-using UniversalAnalyticsHttpWrapper.Exceptions;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
 {
@@ -9,9 +7,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     public class UniversalAnalyticsEventFactoryTests
     {
         private IConfigurationManager configurationManagerMock;
-        private IAppSettings appSettingsMock;
         UniversalAnalyticsEventFactory factory;
-        private string measurementProtocolVersion = "measurementProtocolVersion";
         private string trackingId = "tracking id";
         private string anonymousClientId = "anonymous client id";
         private string eventCategory = "event category";
@@ -23,10 +19,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void SetUp()
         {
             configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
-            appSettingsMock = MockRepository.GenerateMock<IAppSettings>();
-
-            configurationManagerMock.Expect(mock => mock.AppSettings)
-                .Return(appSettingsMock);
 
              factory = new UniversalAnalyticsEventFactory(configurationManagerMock);
         }
@@ -34,8 +26,10 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItReturnsANewUniversalAnalyticsEvent()
         {
-            SetupMockForGettingTrackingIdFromConfig(true);
-            IUniversalAnalyticsEvent analyticsEvent = factory.MakeUniversalAnalyticsEvent(
+            configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
+                .Return(trackingId);
+
+            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(
                 anonymousClientId,
                 eventCategory,
                 eventAction,
@@ -49,31 +43,6 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Assert.AreEqual(eventAction, analyticsEvent.EventAction);
             Assert.AreEqual(eventLabel, analyticsEvent.EventLabel);
             Assert.AreEqual(eventValue, analyticsEvent.EventValue);
-        }
-
-        [Test]
-        public void ItThrowsAConfigEntryMissingExceptionIfTheTrackingIdIsntSetInTheConfig()
-        {
-            SetupMockForGettingTrackingIdFromConfig(false);
-            ConfigEntryMissingException expectedException = new ConfigEntryMissingException(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
-
-            ConfigEntryMissingException exception = Assert.Throws<ConfigEntryMissingException>(() => factory.MakeUniversalAnalyticsEvent(
-              anonymousClientId,
-              eventCategory,
-              eventAction,
-              eventLabel,
-              eventValue));
-
-            Assert.AreEqual(expectedException.Message, exception.Message);
-        }
-
-        private void SetupMockForGettingTrackingIdFromConfig(bool setupTrackingIdLookup)
-        {
-            if (setupTrackingIdLookup)
-            {
-                appSettingsMock.Expect(mock => mock[UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID])
-                    .Return(trackingId);
-            }
         }
     }
 }

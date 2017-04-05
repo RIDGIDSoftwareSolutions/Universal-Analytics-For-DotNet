@@ -1,37 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration.Abstractions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UniversalAnalyticsHttpWrapper.Exceptions;
-
-namespace UniversalAnalyticsHttpWrapper
+﻿namespace UniversalAnalyticsHttpWrapper
 {
     /// <summary>
     /// Class for making instances of IUniversalAnalyticsEvent objects
     /// </summary>
     public class UniversalAnalyticsEventFactory : IUniversalAnalyticsEventFactory
     {
+        private readonly IConfigurationManager _configurationManager;
+
         /// <summary>
         /// This key is required in the .config. Find this value from your Universal Analytics property that was set up on
         /// www.google.com/analytics/
         /// </summary>
         public const string APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID = "UniversalAnalytics.TrackingId";
 
-        private readonly IConfigurationManager configurationManager;
-
         /// <summary>
         /// Default constructor. Could be a singleton but this is easier for the average developer to consume
         /// </summary>
         public UniversalAnalyticsEventFactory()
         {
-            this.configurationManager = new ConfigurationManager();
+            _configurationManager = new ConfigurationManagerWrapper();
         }
 
         internal UniversalAnalyticsEventFactory(IConfigurationManager configurationManager)
         {
-            this.configurationManager = configurationManager;
+            _configurationManager = configurationManager;
         }
 
         /// <summary>
@@ -60,7 +52,7 @@ namespace UniversalAnalyticsHttpWrapper
             string eventLabel, 
             string eventValue = null) 
         {
-            string trackingId = RetrieveAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
+            string trackingId = _configurationManager.GetAppSetting(APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID);
 
             return new UniversalAnalyticsEvent(
                 trackingId,
@@ -69,17 +61,6 @@ namespace UniversalAnalyticsHttpWrapper
                 eventAction,
                 eventLabel,
                 eventValue);
-        }
-
-        private string RetrieveAppSetting(string appKey)
-        {
-            string appSetting = configurationManager.AppSettings[appKey];
-            if (appSetting == null)
-            {
-                throw new ConfigEntryMissingException(appKey);
-            }
-
-            return appSetting;
         }
     }
 }

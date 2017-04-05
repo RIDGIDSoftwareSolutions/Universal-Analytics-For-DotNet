@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
+﻿using System.Configuration;
 
 namespace UniversalAnalyticsHttpWrapper.Exceptions
 {
@@ -17,12 +13,6 @@ namespace UniversalAnalyticsHttpWrapper.Exceptions
             this.appKeyForMissingSetting = appKeyForMissingSetting;
         }
 
-        public override string Message
-        {
-            get
-            {
-                return string.Format(EXCEPTION_MESSAGE_FORMAT, appKeyForMissingSetting);
-            }
-        }
+        public override string Message => string.Format(EXCEPTION_MESSAGE_FORMAT, appKeyForMissingSetting);
     }
 }

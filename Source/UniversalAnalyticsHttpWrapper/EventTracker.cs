@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Configuration.Abstractions;
-using UniversalAnalyticsHttpWrapper.Exceptions;
 
 namespace UniversalAnalyticsHttpWrapper
 {
@@ -30,8 +24,8 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public EventTracker()
         {
-            this.postDataBuilder = new PostDataBuilder();
-            this.googleDataSender = new GoogleDataSender();
+            postDataBuilder = new PostDataBuilder();
+            googleDataSender = new GoogleDataSender();
         }
 
         /// <summary>

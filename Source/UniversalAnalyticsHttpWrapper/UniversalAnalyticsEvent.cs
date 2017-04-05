@@ -11,7 +11,7 @@ namespace UniversalAnalyticsHttpWrapper
     /// </summary>
     /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
     /// one of the required config attributes are missing.</exception>
-    public class UniversalAnalyticsEvent : UniversalAnalyticsHttpWrapper.IUniversalAnalyticsEvent
+    public class UniversalAnalyticsEvent : IUniversalAnalyticsEvent
     {
         internal const string EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE = "{0} cannot be null or whitespace";
 
@@ -64,7 +64,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public string TrackingId
         {
-            get { return this.trackingId; }
+            get { return trackingId; }
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public string AnonymousClientId
         {
-            get { return this.anonymousClientId; }
+            get { return anonymousClientId; }
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public string EventCategory
         {
-            get { return this.eventCategory; }
+            get { return eventCategory; }
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public string EventAction
         {
-            get { return this.eventAction; }
+            get { return eventAction; }
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public string EventLabel
         {
-            get { return this.eventLabel; }
+            get { return eventLabel; }
         }
 
         /// <summary>
@@ -104,33 +104,33 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public string EventValue
         {
-            get { return this.eventValue; }
+            get { return eventValue; }
         }
 
         private void ValidateRequiredFields()
         {
-            if (string.IsNullOrWhiteSpace(this.trackingId))
+            if (string.IsNullOrWhiteSpace(trackingId))
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
                                   "analyticsEvent.TrackingId"));
             }
 
-            if (string.IsNullOrWhiteSpace(this.anonymousClientId))
+            if (string.IsNullOrWhiteSpace(anonymousClientId))
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
                                   "analyticsEvent.AnonymousClientId"));
             }
 
-            if (string.IsNullOrWhiteSpace(this.eventCategory))
+            if (string.IsNullOrWhiteSpace(eventCategory))
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
                                   "analyticsEvent.EventCategory"));
             }
 
-            if (string.IsNullOrWhiteSpace(this.eventAction))
+            if (string.IsNullOrWhiteSpace(eventAction))
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,

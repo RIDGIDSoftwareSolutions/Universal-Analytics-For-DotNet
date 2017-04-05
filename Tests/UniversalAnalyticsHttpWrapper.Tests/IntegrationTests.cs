@@ -1,13 +1,12 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Configuration.Abstractions;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
 {
     [TestFixture, Ignore("Integration tests.")]
     public class IntegrationTests
     {
-        private readonly UniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory(new ConfigurationManager());
+        private readonly UniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
 
         [Test]
         public void SampleCodeForGitHubReadMeUsingFactoryToGetEventObject()
