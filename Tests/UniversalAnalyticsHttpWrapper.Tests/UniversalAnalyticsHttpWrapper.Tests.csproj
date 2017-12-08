@@ -54,8 +54,11 @@
     <Compile Include="EventTrackerTests.cs" />
     <Compile Include="GoogleDataSenderTests.cs" />
     <Compile Include="IntegrationTests.cs" />
+    <Compile Include="Objects\ClientIdTests.cs" />
+    <Compile Include="Objects\UserIdTests.cs" />
     <Compile Include="PostDataBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackingResultTests.cs" />
     <Compile Include="UniversalAnalyticsEventFactoryTests.cs" />
     <Compile Include="UniversalAnalyticsEventTests.cs" />
   </ItemGroup>

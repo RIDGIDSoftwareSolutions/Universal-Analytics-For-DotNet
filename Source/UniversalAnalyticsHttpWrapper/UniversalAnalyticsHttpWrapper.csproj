@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\ClientId.cs" />
     <Compile Include="ConfigurationManagerWrapper.cs" />
     <Compile Include="EventTracker.cs" />
     <Compile Include="Exceptions\ConfigEntryMissingException.cs" />
@@ -59,8 +60,10 @@
     <Compile Include="IUniversalAnalyticsEventFactory.cs" />
     <Compile Include="PostDataBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackingResult.cs" />
     <Compile Include="UniversalAnalyticsEvent.cs" />
     <Compile Include="UniversalAnalyticsEventFactory.cs" />
+    <Compile Include="Objects\UserId.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

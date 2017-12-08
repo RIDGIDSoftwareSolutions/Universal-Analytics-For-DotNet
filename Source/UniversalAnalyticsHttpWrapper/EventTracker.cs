@@ -8,8 +8,9 @@ namespace UniversalAnalyticsHttpWrapper
     /// </summary>
     public class EventTracker : IEventTracker
     {
-        private readonly IPostDataBuilder postDataBuilder;
-        private readonly IGoogleDataSender googleDataSender;
+        private readonly IPostDataBuilder _postDataBuilder;
+        private readonly IGoogleDataSender _googleDataSender;
+
         /// <summary>
         /// This is the current Google collection URI for version 1 of the measurement protocol
         /// </summary>
@@ -24,8 +25,8 @@ namespace UniversalAnalyticsHttpWrapper
         /// </summary>
         public EventTracker()
         {
-            postDataBuilder = new PostDataBuilder();
-            googleDataSender = new GoogleDataSender();
+            this._postDataBuilder = new PostDataBuilder();
+            this._googleDataSender = new GoogleDataSender();
         }
 
         /// <summary>
@@ -35,30 +36,52 @@ namespace UniversalAnalyticsHttpWrapper
         /// <param name="googleDataSender"></param>
         internal EventTracker(IPostDataBuilder postDataBuilder, IGoogleDataSender googleDataSender)
         {
-            this.postDataBuilder = postDataBuilder;
-            this.googleDataSender = googleDataSender;
+            this._postDataBuilder = postDataBuilder;
+            this._googleDataSender = googleDataSender;
         }
 
         /// <summary>
-        /// Pushes an event up to the Universal Analytics web property specified in the .config file.
+        /// Tracks the event and puts the result in a container object.
         /// </summary>
-        /// <param name="analyticsEvent">The event to be logged.</param>
-        public void TrackEvent(IUniversalAnalyticsEvent analyticsEvent)
-        {
-            string postData = postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+        /// <param name="analyticsEvent"></param>
+        /// <returns>The result of the tracking operation</returns>
+        public TrackingResult TrackEvent(IUniversalAnalyticsEvent analyticsEvent)
+        { 
+            var result = new TrackingResult();
+           
+            try
+            {
+                string postData = this._postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+                this._googleDataSender.SendData(GOOGLE_COLLECTION_URI, postData);
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+            }
 
-            googleDataSender.SendData(GOOGLE_COLLECTION_URI, postData);
+            return result;
         }
 
         /// <summary>
-        /// Pushes an event up to the Universal Analytics web property specified in the .config file.
+        /// Tracks the event and puts the result in a container object.
         /// </summary>
-        /// <param name="analyticsEvent">The event to be logged.</param>
-        public async Task TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent)
+        /// <param name="analyticsEvent"></param>
+        /// <returns>The result of the tracking operation</returns>
+        public async Task<TrackingResult> TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent)
         {
-            var postData = postDataBuilder.BuildPostDataCollection(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+            var result = new TrackingResult();
 
-            await googleDataSender.SendDataAsync(GOOGLE_COLLECTION_URI, postData);
+            try
+            {
+                var postData = this._postDataBuilder.BuildPostDataCollection(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+                await this._googleDataSender.SendDataAsync(GOOGLE_COLLECTION_URI, postData);
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+            }
+
+            return result;
         }
     }
 }

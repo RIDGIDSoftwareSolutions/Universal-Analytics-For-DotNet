@@ -7,18 +7,19 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     public class UniversalAnalyticsEventTests
     {
         private string trackingId = "A-XXXXXX-YY";
-        private string anonymousClientId = "anonymous client id";
+        private string clientId = "anonymous client id";
         private string eventCategory = "event category";
         private string eventAction = "event action";
         private string eventLabel = "event label";
         private string eventValue = "500";
+        private string userId = "user id";
 
         [Test]
         public void ItThrowsAnArgumentExceptionIfTheTrackingIdIsWhiteSpace()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 "   ",
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 eventAction,
                 eventLabel));
@@ -30,14 +31,15 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
-        public void ItThrowsAnArgumentExceptionIfTheTrackingIdIsNull()
+        public void ItThrowsAnArgumentExceptionIfTheTrackingIdAndUserIdAreNull()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 null,
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 eventAction,
-                eventLabel));
+                eventLabel,
+                null));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
@@ -46,36 +48,39 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
-        public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsWhiteSpace()
+        public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdAndUserIdAreWhiteSpace()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
                 "  ", 
                 eventCategory,
                 eventAction,
-                eventLabel));
+                eventLabel,
+                "   "));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                "analyticsEvent.AnonymousClientId");
+                "analyticsEvent.AnonymousClientId || analyticsEvent.UserId");
             Assert.AreEqual(expectedMessage, exception.Message);
         }
 
         [Test]
-        public void ItThrowsAnArgumentExceptionIfTheAnonymousClientIdIsNull()
+        public void ItThrowsAnArgumentExceptionIfTheUserIdIsNull()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
-                trackingId, 
-                null, 
+                trackingId,
+                null,
                 eventCategory,
                 eventAction,
-                eventLabel));
+                eventLabel,
+                null));
 
             string expectedMessage = string.Format(
                 UniversalAnalyticsEvent.EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                "analyticsEvent.AnonymousClientId");
+                "analyticsEvent.AnonymousClientId || analyticsEvent.UserId");
             Assert.AreEqual(expectedMessage, exception.Message);
         }
+
 
         [Test]
         public void ItSetsTheTrackingIdInTheConstructor()
@@ -90,7 +95,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
 
-            Assert.AreEqual(anonymousClientId, universalAnalyticsEvent.AnonymousClientId);
+            Assert.AreEqual(this.clientId, universalAnalyticsEvent.AnonymousClientId);
         }
 
         [Test]
@@ -98,7 +103,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 "  ",
                 eventAction,
                 eventLabel));
@@ -114,7 +119,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 null,
                 eventAction,
                 eventLabel));
@@ -130,7 +135,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 eventCategory,
                 eventAction,
                 eventLabel);
@@ -139,11 +144,27 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
+        public void ItSetsTheUserIdInTheConstructor()
+        {
+            UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
+                trackingId,
+                clientId,
+                eventCategory,
+                eventAction,
+                eventLabel,
+                eventValue,
+                userId);
+
+            Assert.AreEqual(this.userId, universalAnalyticsEvent.UserId);
+        }
+
+
+        [Test]
         public void ItThrowsAnArgumentExceptionIfTheEventActionIsWhiteSpace()
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 "  ",
                 eventLabel));
@@ -159,7 +180,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 eventCategory,
                 null,
                 eventLabel));
@@ -175,7 +196,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 eventCategory,
                 eventAction,
                 eventLabel);
@@ -188,7 +209,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                this.clientId, 
                 eventCategory, 
                 eventAction, 
                 eventLabel);
@@ -201,7 +222,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId,
-                anonymousClientId, 
+                this.clientId, 
                 eventCategory, 
                 eventAction, 
                 eventLabel, 
@@ -214,7 +235,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId,
-                anonymousClientId,
+                this.clientId,
                 eventCategory,
                 eventAction,
                 eventLabel,

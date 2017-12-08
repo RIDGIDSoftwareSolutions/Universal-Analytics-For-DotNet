@@ -31,5 +31,9 @@ namespace UniversalAnalyticsHttpWrapper
         /// Gets the event value for this event.
         /// </summary>
         string EventValue { get; }
+        /// <summary>
+        /// Gets the optional user Id for this event.
+        /// </summary>
+        string UserId { get; }
     }
 }

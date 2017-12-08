@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 namespace UniversalAnalyticsHttpWrapper
@@ -12,14 +9,17 @@ namespace UniversalAnalyticsHttpWrapper
     public interface IEventTracker
     {
         /// <summary>
-        /// 
+        /// Tracks the event and puts the result in a container object.
         /// </summary>
         /// <param name="analyticsEvent"></param>
-        void TrackEvent(IUniversalAnalyticsEvent analyticsEvent);
+        /// <returns>The result of the tracking operation</returns>
+        TrackingResult TrackEvent(IUniversalAnalyticsEvent analyticsEvent);
+        
         /// <summary>
-        /// 
+        /// Tracks the event and puts the result in a container object.
         /// </summary>
         /// <param name="analyticsEvent"></param>
-        Task TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent);
+        /// <returns>The result of the tracking operation</returns>
+        Task<TrackingResult> TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent);
     }
 }

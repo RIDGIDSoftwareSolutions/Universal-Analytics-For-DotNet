@@ -21,13 +21,14 @@ namespace UniversalAnalyticsHttpWrapper
 
         public void SendData(Uri googleCollectionUri, string postData)
         {
-            if (String.IsNullOrEmpty(postData))
+            if (string.IsNullOrEmpty(postData))
                 throw new ArgumentNullException("postData", "Request body cannot be empty.");
 
-            HttpWebRequest httpRequest = WebRequest.CreateHttp(googleCollectionUri);
+            var httpRequest = WebRequest.CreateHttp(googleCollectionUri);
             httpRequest.ContentLength = Encoding.UTF8.GetByteCount(postData);
             httpRequest.Method = "POST";
-            using(Stream requestStream = httpRequest.GetRequestStream())
+
+            using(var requestStream = httpRequest.GetRequestStream())
             {
                 using (var writer = new StreamWriter(requestStream))
                 {

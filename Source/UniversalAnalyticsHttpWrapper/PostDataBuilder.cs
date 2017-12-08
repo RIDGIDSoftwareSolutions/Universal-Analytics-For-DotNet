@@ -10,6 +10,7 @@ namespace UniversalAnalyticsHttpWrapper
         internal const string PARAMETER_KEY_VERSION = "v";
         internal const string PARAMETER_KEY_TRACKING_ID = "tid";
         internal const string PARAMETER_KEY_ANONYMOUS_CLIENT_ID = "cid";
+        internal const string PARAMETER_KEY_USER_ID = "uid";
         internal const string PARAMETER_KEY_HIT_TYPE = "t";
         internal const string PARAMETER_KEY_EVENT_CATEGORY = "ec";
         internal const string PARAMETER_KEY_EVENT_ACTION = "ea";
@@ -39,7 +40,17 @@ namespace UniversalAnalyticsHttpWrapper
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(string.Empty);
             nameValueCollection[PARAMETER_KEY_VERSION] = measurementProtocolVersion;
             nameValueCollection[PARAMETER_KEY_TRACKING_ID] = analyticsEvent.TrackingId;
-            nameValueCollection[PARAMETER_KEY_ANONYMOUS_CLIENT_ID] = analyticsEvent.AnonymousClientId;
+
+            if (!string.IsNullOrWhiteSpace(analyticsEvent.UserId))
+            {
+                nameValueCollection[PARAMETER_KEY_USER_ID] = analyticsEvent.UserId;
+            }
+
+            if (!string.IsNullOrWhiteSpace(analyticsEvent.AnonymousClientId))
+            { 
+                nameValueCollection[PARAMETER_KEY_ANONYMOUS_CLIENT_ID] = analyticsEvent.AnonymousClientId;
+            }
+
             nameValueCollection[PARAMETER_KEY_HIT_TYPE] = HitTypeEnum.@event.ToString();
             nameValueCollection[PARAMETER_KEY_EVENT_ACTION] = analyticsEvent.EventAction;
             nameValueCollection[PARAMETER_KEY_EVENT_CATEGORY] = analyticsEvent.EventCategory;
