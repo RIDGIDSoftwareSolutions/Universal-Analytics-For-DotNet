@@ -10,19 +10,19 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     [TestFixture]
     public class EventTrackerTests
     {
-        private EventTracker eventTracker;
-        private IUniversalAnalyticsEvent analyticsEvent;
-        private IPostDataBuilder postDataBuilderMock;
-        private IGoogleDataSender googleDataSenderMock;
+        private EventTracker _eventTracker;
+        private IUniversalAnalyticsEvent _analyticsEvent;
+        private IPostDataBuilder _postDataBuilderMock;
+        private IGoogleDataSender _googleDataSenderMock;
 
         [SetUp]
         public void SetUp()
         {
-            postDataBuilderMock = MockRepository.GenerateMock<IPostDataBuilder>();
-            googleDataSenderMock = MockRepository.GenerateMock<IGoogleDataSender>();
-            eventTracker = new EventTracker(postDataBuilderMock, googleDataSenderMock);
+            _postDataBuilderMock = MockRepository.GenerateMock<IPostDataBuilder>();
+            _googleDataSenderMock = MockRepository.GenerateMock<IGoogleDataSender>();
+            _eventTracker = new EventTracker(_postDataBuilderMock, _googleDataSenderMock);
 
-            analyticsEvent = MockRepository.GenerateMock<IUniversalAnalyticsEvent>();
+            _analyticsEvent = MockRepository.GenerateMock<IUniversalAnalyticsEvent>();
         }
 
         [Test]
@@ -30,14 +30,14 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             string expectedPostData = "some amazing string that matches what google requires";
             
-            postDataBuilderMock.Expect(mock => mock.BuildPostDataString(
+            _postDataBuilderMock.Expect(mock => mock.BuildPostDataString(
                     Arg<string>.Is.Anything,
                     Arg<UniversalAnalyticsEvent>.Is.Anything))
                 .Return(expectedPostData);
 
-            eventTracker.TrackEvent(analyticsEvent);
+            _eventTracker.TrackEvent(_analyticsEvent);
 
-            googleDataSenderMock.AssertWasCalled(mock => 
+            _googleDataSenderMock.AssertWasCalled(mock => 
                 mock.SendData(EventTracker.GOOGLE_COLLECTION_URI, expectedPostData));
         }
 
@@ -46,19 +46,19 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             var expectedPostData = new List<KeyValuePair<string, string>>();
 
-            postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
+            _postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
                     Arg<string>.Is.Anything,
                     Arg<UniversalAnalyticsEvent>.Is.Anything))
                 .Return(expectedPostData);
 
-            googleDataSenderMock.Expect(mock => mock.SendDataAsync(
+            _googleDataSenderMock.Expect(mock => mock.SendDataAsync(
                     Arg<Uri>.Is.Anything,
                     Arg<IEnumerable<KeyValuePair<string, string>>>.Is.Anything))
                 .Return(Task.FromResult(0));
             
-            await eventTracker.TrackEventAsync(analyticsEvent);
+            await _eventTracker.TrackEventAsync(_analyticsEvent);
 
-            googleDataSenderMock.AssertWasCalled(mock =>
+            _googleDataSenderMock.AssertWasCalled(mock =>
                 mock.SendDataAsync(EventTracker.GOOGLE_COLLECTION_URI, expectedPostData));
         }
 
@@ -67,16 +67,16 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             var expectedException = new HttpException(400, "bad request");
 
-            postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
+            _postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
                     Arg<string>.Is.Anything,
                     Arg<UniversalAnalyticsEvent>.Is.Anything))
                 .Return(new List<KeyValuePair<string, string>>());
 
-            googleDataSenderMock.Expect(mock => mock.SendData(Arg<Uri>.Is.Anything,
+            _googleDataSenderMock.Expect(mock => mock.SendData(Arg<Uri>.Is.Anything,
                     Arg<string>.Is.Anything))
                 .Throw(expectedException);
 
-            var result = eventTracker.TrackEvent(analyticsEvent);
+            var result = _eventTracker.TrackEvent(_analyticsEvent);
 
             Assert.AreEqual(expectedException, result.Exception);
         }
@@ -86,16 +86,16 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             var expectedException = new HttpException(400, "bad request");
 
-            postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
+            _postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
                     Arg<string>.Is.Anything,
                     Arg<UniversalAnalyticsEvent>.Is.Anything))
                 .Return(new List<KeyValuePair<string, string>>());
 
-            googleDataSenderMock.Expect(mock => mock.SendDataAsync(Arg<Uri>.Is.Anything,
+            _googleDataSenderMock.Expect(mock => mock.SendDataAsync(Arg<Uri>.Is.Anything,
                     Arg<IEnumerable<KeyValuePair<string, string>>>.Is.Anything))
                 .Throw(expectedException);
 
-            var result = await eventTracker.TrackEventAsync(analyticsEvent);
+            var result = await _eventTracker.TrackEventAsync(_analyticsEvent);
 
             Assert.AreEqual(expectedException, result.Exception);
         }
