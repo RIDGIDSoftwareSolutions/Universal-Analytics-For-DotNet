@@ -34,5 +34,9 @@
         /// Gets the optional user Id for this event.
         /// </summary>
         string UserId { get; }
+        /// <summary>
+        /// Indicates whether this event was designated as a non-interaction event
+        /// </summary>
+        bool NonInteractionHit { get; }
     }
 }

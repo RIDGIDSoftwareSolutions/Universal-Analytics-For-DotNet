@@ -119,6 +119,22 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
+        public void NonInteractionEventsDontStartNewSessions()
+        {
+            var userId = new UserId("user id without a new session");
+            var userIdEvent = _eventFactory.MakeUniversalAnalyticsEvent(
+                userId,
+                "nonInteractdionHitCategory",
+                "nonInteractdionHitAction",
+                "nonInteractdionHitLabel",
+                nonInteractionEvent: true);
+
+            var result = _eventTracker.TrackEvent(userIdEvent);
+
+            Assert.IsFalse(result.Failed);
+        }
+
+        [Test]
         public void SampleCodeForGitHubReadMeUsingFactoryToGetEventObject()
         {
             // Use your favorite dependency injection framework for the tracker and factory. Singletons preferred.

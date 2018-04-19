@@ -19,6 +19,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         private string _eventLabel = "event label";
         private string _eventValue = "500";
         private string _userId = "user id";
+        private bool _nonInteractionHit = true;
 
         [SetUp]
         public void SetUp()
@@ -40,6 +41,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 .Return(_eventValue);
             _analyticsEvent.Expect(m => m.UserId)
                 .Return(_userId);
+            _analyticsEvent.Expect(mock => mock.NonInteractionHit)
+                .Return(_nonInteractionHit);
         }
 
         [Test]
@@ -64,6 +67,25 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItPutsTheUserIdInTheString()
         {
             ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_USER_ID, this._userId);
+        }
+
+        [Test]
+        public void ItPutsTheNonInteractionHitInTheString()
+        {
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_NON_INTERACTION_HIT, "1");
+        }
+
+        [Test]
+        public void ItDoesntAddTheNonInterationHitIfItIsFalse()
+        {
+            _analyticsEvent.Expect(mock => mock.NonInteractionHit)
+                .Return(false)
+                .Repeat.Any();
+            string postData = _postDataBuilder.BuildPostDataString(string.Empty, _analyticsEvent);
+
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postData);
+
+            Assert.Null(nameValueCollection[PostDataBuilder.PARAMETER_KEY_NON_INTERACTION_HIT]);
         }
 
         [Test]
