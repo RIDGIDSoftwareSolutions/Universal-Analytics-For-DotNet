@@ -1,5 +1,4 @@
-﻿using System;
-namespace UniversalAnalyticsHttpWrapper
+﻿namespace UniversalAnalyticsHttpWrapper
 {
     /// <summary>
     /// Represents a Universal Analytics event. See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#events
