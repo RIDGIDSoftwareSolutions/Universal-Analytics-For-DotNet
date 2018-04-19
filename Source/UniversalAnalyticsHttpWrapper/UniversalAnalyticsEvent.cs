@@ -48,14 +48,14 @@ namespace UniversalAnalyticsHttpWrapper
             string userId = null,
             bool nonInteractionEvent = false)
         {
-            this.TrackingId = trackingId;
-            this.AnonymousClientId = anonymousClientId;
-            this.EventCategory = eventCategory;
-            this.EventAction = eventAction;
-            this.EventLabel = eventLabel;
-            this.EventValue = eventValue;
-            this.UserId = userId;
-            this.NonInteractionHit = nonInteractionEvent;
+            TrackingId = trackingId;
+            AnonymousClientId = anonymousClientId;
+            EventCategory = eventCategory;
+            EventAction = eventAction;
+            EventLabel = eventLabel;
+            EventValue = eventValue;
+            UserId = userId;
+            NonInteractionHit = nonInteractionEvent;
 
             ValidateRequiredFields();
         }
