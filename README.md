@@ -52,7 +52,10 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 	"test label",
 	// Optional. The event value for the event.
 	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
-	"10");
+	"10",
+	// Optional. Marks the event as a non-interaction event so it doesn't impact the bounce rate calculation.
+	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni for details. 
+	nonInteractionEvent: true);
 ```
 
 To create an event with a `UserId`:
@@ -77,7 +80,10 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 	"test label",
 	// Optional. The event value for the event.
 	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
-	"10");
+	"10",
+	// Optional. Marks the event as a non-interaction event so it doesn't impact the bounce rate calculation.
+	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni for details. 
+	nonInteractionEvent: true);
 ```
 
 To create an event without using `ClientId` or `UserId` objects:
@@ -101,7 +107,10 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 	"10",
 	// Required (if not using clientId). The user id associated with this event.
 	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
-	"user-id");
+	"user-id",
+	// Optional. Marks the event as a non-interaction event so it doesn't impact the bounce rate calculation.
+	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni for details. 
+	nonInteractionEvent: true);
 ```
 
 Finally, push the event to Google Analytics using the EventTracker:
