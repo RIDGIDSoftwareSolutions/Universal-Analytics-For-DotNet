@@ -16,6 +16,8 @@ namespace UniversalAnalyticsHttpWrapper
         internal const string PARAMETER_KEY_EVENT_ACTION = "ea";
         internal const string PARAMETER_KEY_EVENT_LABEL = "el";
         internal const string PARAMETER_KEY_EVENT_VALUE = "ev";
+        internal const string PARAMETER_KEY_NON_INTERACTION_HIT = "ni";
+
         internal const string HIT_TYPE_EVENT = "event";
 
         public string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent)
@@ -63,6 +65,11 @@ namespace UniversalAnalyticsHttpWrapper
             if(analyticsEvent.EventValue != null)
             {
                 nameValueCollection[PARAMETER_KEY_EVENT_VALUE] = analyticsEvent.EventValue;
+            }
+
+            if (analyticsEvent.NonInteractionHit)
+            {
+                nameValueCollection[PARAMETER_KEY_NON_INTERACTION_HIT] = "1";
             }
 
             return nameValueCollection;

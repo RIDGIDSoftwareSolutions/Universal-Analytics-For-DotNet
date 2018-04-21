@@ -1,5 +1,4 @@
-﻿using System;
-namespace UniversalAnalyticsHttpWrapper
+﻿namespace UniversalAnalyticsHttpWrapper
 {
     /// <summary>
     /// Represents a Universal Analytics event. See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#events
@@ -35,5 +34,9 @@ namespace UniversalAnalyticsHttpWrapper
         /// Gets the optional user Id for this event.
         /// </summary>
         string UserId { get; }
+        /// <summary>
+        /// Indicates whether this event was designated as a non-interaction event
+        /// </summary>
+        bool NonInteractionHit { get; }
     }
 }

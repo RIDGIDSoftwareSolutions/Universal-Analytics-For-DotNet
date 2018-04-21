@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UniversalAnalyticsHttpWrapper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("jakejgordon")]
+[assembly: AssemblyCompany("RIDGID Software Solutions")]
 [assembly: AssemblyProduct("UniversalAnalyticsHttpWrapper")]
-[assembly: AssemblyCopyright("Copyright © jakejgordon 2017")]
+[assembly: AssemblyCopyright("Copyright © RIDGID Software Solutions 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.0.*")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.5.0.*")]
+[assembly: AssemblyFileVersion("1.5.0.0")]
 
 [assembly: InternalsVisibleTo("UniversalAnalyticsHttpWrapper.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

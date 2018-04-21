@@ -45,6 +45,9 @@ namespace UniversalAnalyticsHttpWrapper
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.</param>
         ///  /// <param name="userId">Required if anonymousClientId is not set. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.</param>
+        /// <param name="nonInteractionEvent">Optional. Indicates that the event should not count as a user interaction. Interaction hits
+        /// are used to impact things like bounce rate and session length.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni for details.</param>
         /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
         /// one of the required config attributes are missing.</exception>
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
@@ -56,7 +59,8 @@ namespace UniversalAnalyticsHttpWrapper
             string eventAction, 
             string eventLabel, 
             string eventValue = null,
-            string userId = null) 
+            string userId = null,
+            bool nonInteractionEvent = false) 
         {
             return new UniversalAnalyticsEvent(
                 GetAnalyticsTrackingIdFromConfig(),
@@ -65,7 +69,8 @@ namespace UniversalAnalyticsHttpWrapper
                 eventAction,
                 eventLabel,
                 eventValue,
-                userId);
+                userId,
+                nonInteractionEvent);
         }
 
         /// <summary>
@@ -82,6 +87,9 @@ namespace UniversalAnalyticsHttpWrapper
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.</param>
         /// <param name="eventValue">Optional. The event value for the event.
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.</param>
+        /// <param name="nonInteractionEvent">Optional. Indicates that the event should not count as a user interaction. Interaction hits
+        /// are used to impact things like bounce rate and session length.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni for details.</param>
         /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
         /// one of the required config attributes are missing.</exception>
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
@@ -92,7 +100,8 @@ namespace UniversalAnalyticsHttpWrapper
             string eventCategory,
             string eventAction, 
             string eventLabel, 
-            string eventValue = null)
+            string eventValue = null,
+            bool nonInteractionEvent = false)
         {
             if (clientId == null)
             {
@@ -121,6 +130,9 @@ namespace UniversalAnalyticsHttpWrapper
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.</param>
         /// <param name="eventValue">Optional. The event value for the event.
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.</param>
+        /// <param name="nonInteractionEvent">Optional. Indicates that the event should not count as a user interaction. Interaction hits
+        /// are used to impact things like bounce rate and session length.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni for details.</param>
         /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
         /// one of the required config attributes are missing.</exception>
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
@@ -131,7 +143,8 @@ namespace UniversalAnalyticsHttpWrapper
             string eventCategory, 
             string eventAction,
             string eventLabel, 
-            string eventValue = null)
+            string eventValue = null,
+            bool nonInteractionEvent = false)
         {
             if (userId == null)
             {

@@ -30,6 +30,9 @@ namespace UniversalAnalyticsHttpWrapper
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.</param>
         /// <param name="userId">Optional. The userId value for the event. This will override anonymousClientId.
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.</param>
+        /// <param name="nonInteractionEvent">Optional. Indicates that the event should not count as a user interaction. Interaction hits
+        /// are used to impact things like bounce rate and session length.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ni for details.</param>
         /// <exception cref="UniversalAnalyticsHttpWrapper.Exceptions.ConfigEntryMissingException">Thrown when
         /// one of the required config attributes are missing.</exception>
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
@@ -42,15 +45,17 @@ namespace UniversalAnalyticsHttpWrapper
             string eventAction,
             string eventLabel,
             string eventValue = null,
-            string userId = null)
+            string userId = null,
+            bool nonInteractionEvent = false)
         {
-            this.TrackingId = trackingId;
-            this.AnonymousClientId = anonymousClientId;
-            this.EventCategory = eventCategory;
-            this.EventAction = eventAction;
-            this.EventLabel = eventLabel;
-            this.EventValue = eventValue;
-            this.UserId = userId;
+            TrackingId = trackingId;
+            AnonymousClientId = anonymousClientId;
+            EventCategory = eventCategory;
+            EventAction = eventAction;
+            EventLabel = eventLabel;
+            EventValue = eventValue;
+            UserId = userId;
+            NonInteractionHit = nonInteractionEvent;
 
             ValidateRequiredFields();
         }
@@ -89,6 +94,11 @@ namespace UniversalAnalyticsHttpWrapper
         /// Gets the userId that was passed in when the object was constructed.
         /// </summary>
         public string UserId { get; }
+
+        /// <summary>
+        /// Gets the value of the nonInteractionHit value that was passed in when the object was constructed
+        /// </summary>
+        public bool NonInteractionHit { get; }
 
 
         private void ValidateRequiredFields()

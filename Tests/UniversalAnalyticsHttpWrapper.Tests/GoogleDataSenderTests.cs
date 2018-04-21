@@ -7,15 +7,15 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     [TestFixture]
     public class GoogleDataSenderTests
     {
-        private GoogleDataSender googleDataSender;
-        private Uri dataCollectionUri = EventTracker.GOOGLE_COLLECTION_URI;
-        private IEnumerable<KeyValuePair<string, string>> postDataCollection = new List<KeyValuePair<string, string>>();
-        private string postDataString = "the data being posted";
+        private GoogleDataSender _googleDataSender;
+        private Uri _dataCollectionUri = EventTracker.GOOGLE_COLLECTION_URI;
+        private IEnumerable<KeyValuePair<string, string>> _postDataCollection = new List<KeyValuePair<string, string>>();
+        private string _postDataString = "the data being posted";
 
         [SetUp]
         public void SetUp()
         {
-            googleDataSender = new GoogleDataSender();
+            _googleDataSender = new GoogleDataSender();
         }
 
         //[Test]
@@ -28,7 +28,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItSendsTheRequestWithoutThrowingExceptions()
         {
             Assert.DoesNotThrow(() => {
-                googleDataSender.SendData(dataCollectionUri, postDataString);
+                _googleDataSender.SendData(_dataCollectionUri, _postDataString);
             });
         }
 
@@ -36,7 +36,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItSendsTheAsyncRequestWithoutThrowingExceptions()
         {
             Assert.DoesNotThrow(async () => {
-                await googleDataSender.SendDataAsync(dataCollectionUri, postDataCollection);
+                await _googleDataSender.SendDataAsync(_dataCollectionUri, _postDataCollection);
             });
         }
 
@@ -44,7 +44,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsExceptionIfRequestBodyEmpty()
         {
             Assert.Throws<ArgumentNullException>(() => {
-                googleDataSender.SendData(dataCollectionUri, string.Empty);
+                _googleDataSender.SendData(_dataCollectionUri, string.Empty);
             });
         }
 
@@ -52,8 +52,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItThrowsExceptionIfAsyncRequestBodyEmpty()
         {
             Assert.Throws<ArgumentNullException>(async () => {
-                await googleDataSender.SendDataAsync(
-                    dataCollectionUri, default(IEnumerable<KeyValuePair<string, string>>));
+                await _googleDataSender.SendDataAsync(
+                    _dataCollectionUri, default(IEnumerable<KeyValuePair<string, string>>));
             });
         }
     }
