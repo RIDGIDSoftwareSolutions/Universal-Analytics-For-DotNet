@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 
 namespace UniversalAnalyticsHttpWrapper
@@ -10,6 +11,7 @@ namespace UniversalAnalyticsHttpWrapper
     {
         private readonly IPostDataBuilder _postDataBuilder;
         private readonly IGoogleDataSender _googleDataSender;
+        private readonly NameValueCollection _customPayload;
 
         /// <summary>
         /// This is the current Google collection URI for version 1 of the measurement protocol
@@ -27,6 +29,7 @@ namespace UniversalAnalyticsHttpWrapper
         {
             this._postDataBuilder = new PostDataBuilder();
             this._googleDataSender = new GoogleDataSender();
+            this._customPayload = new NameValueCollection();
         }
 
         /// <summary>
@@ -82,6 +85,32 @@ namespace UniversalAnalyticsHttpWrapper
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Adds "raw" (custom) payload to the hit data.
+        /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters for parameters list. For example AddToCustomPayload("aip", "1") to enable IP anonymization.
+        /// If parameter was already added, it's value will be replaced with the supplied one
+        /// </summary>
+        /// <param name="name">Google Analytics Measurement Protocol short parameter name. for ex: aip, ds, qt, etc</param>
+        /// <param name="value">Parameter value</param>
+        public /*bool*/ void AddToCustomPayload(string name, string value)
+        { //completely up to you if this function should return true/false or throw an exception if something goes wrong
+            foreach (string parameter in _postDataBuilder.SupportedParameters)
+            {
+                if (parameter == name)
+                {
+                    throw new ArgumentException(string.Format("Parameter {0} should not be added as a Custom Payload. Use public object properties instead.", name));
+                    //return false;
+                }
+            }
+
+            if (_customPayload[name] != null)
+                _customPayload[name] = value;
+            else
+                _customPayload.Add(name, value);
+
+            //return true;
         }
     }
 }
