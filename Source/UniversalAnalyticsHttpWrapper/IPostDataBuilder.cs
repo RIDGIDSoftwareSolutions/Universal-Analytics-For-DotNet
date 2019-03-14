@@ -5,7 +5,7 @@ namespace UniversalAnalyticsHttpWrapper
 {
     internal interface IPostDataBuilder
     {
-        string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent);
+        string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent, NameValueCollection customPayload = null);
         IEnumerable<KeyValuePair<string, string>> BuildPostDataCollection(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent, NameValueCollection customPayload = null);
 
         /// <summary>

@@ -21,9 +21,9 @@ namespace UniversalAnalyticsHttpWrapper
         internal const string HIT_TYPE_EVENT = "event";
 
 
-        public string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent)
+        public string BuildPostDataString(string measurementProtocolVersion, IUniversalAnalyticsEvent analyticsEvent, NameValueCollection customPayload = null)
         {
-            var postData = BuildPostData(measurementProtocolVersion, analyticsEvent);
+            var postData = BuildPostData(measurementProtocolVersion, analyticsEvent, customPayload);
             return postData.ToString();
         }
 
@@ -37,9 +37,7 @@ namespace UniversalAnalyticsHttpWrapper
 
             var collection = postData.AllKeys.SelectMany(
                 postData.GetValues,
-                (key, value) => new KeyValuePair<string, string>(key, value));
-
-            
+                (key, value) => new KeyValuePair<string, string>(key, value));            
 
             return collection;
         }

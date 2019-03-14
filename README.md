@@ -126,6 +126,47 @@ if (trackingResult.Failed)
 }
 ```
 
+
+If you need to supply additional event metadata supported by the Google Analytics Measurement Protocol, you could use the .AddToCustomPayload call on the tracker object. See example below
+
+```c#
+IEventTracker eventTracker = new EventTracker();
+
+//This is a simple pass-thru of other (not yet supported) Measurement Protocol fields which are not directly related to the Event tracking but might come handy
+// Using custom payload you can send to GA event contextual information such as page or screen where event happened, Custom Dimensions, Custom Metrics
+// GA Measurement Protocol parameters reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
+//Please see below some commonly used parameters
+
+//Document Location - full uri to the page url
+//https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dl
+eventTracker.AddToCustomPayload("dl", "https://mytesturl.com/");
+
+//Document title - page title, if you want GA to know page/screen title where event has happened
+//https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dt
+eventTracker.AddToCustomPayload("dt", "My test title");
+
+//Screen Name - name of the screen where event has happened
+//https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cd
+eventTracker.AddToCustomPayload("cd", "My screen name");
+
+//Data source. You can use your app name here
+//https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ds
+eventTracker.AddToCustomPayload("ds", "App Name");
+
+//Custom Dimension. You need to create it first in your GA admin interface
+//https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cd_
+eventTracker.AddToCustomPayload("cd1", "Custom Dimension 1 value");
+
+//Custom Metric. You need to create it first in your GA admin interface
+//https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cm_
+eventTracker.AddToCustomPayload("cm1", "100");
+
+//Queue Time. We can modify event time by suppliyng queue time for the hit up to 4 hours in milliseconds
+//https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#qt
+eventTracker.AddToCustomPayload("qt", "560");
+```
+
+
 ## Notes
 The code is almost entirely unit/integration tested so it should be stable and easily updatable. I'm using it on my own site right now so you can find more specific examples at: https://github.com/jakejgordon/NemeStats 
 
