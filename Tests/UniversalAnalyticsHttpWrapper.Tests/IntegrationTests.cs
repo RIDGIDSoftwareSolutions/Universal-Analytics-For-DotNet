@@ -204,5 +204,73 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Assert.IsFalse(result.Failed);
         }
 
+        //added by Dmitrry Klymenko, 15 Mar 2019 
+        [Test]
+        public void SampleCodeForGitHubReadMeAddingcustomPayload()
+        {
+            IEventTracker eventTracker = new EventTracker();
+
+            //This is a simple pass-thru of other (not yet supported) Measurement Protocol fields which are not directly related to the Event tracking but might come handy
+            // Using custom payload you can send to GA event contextual information such as page or screen where event happened, Custom Dimensions, Custom Metrics
+            // GA Measurement Protocol parameters reference: https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
+            //Please see below some commonly used parameters
+
+            //Document Location - full uri to the page url
+            //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dl
+            eventTracker.AddToCustomPayload("dl", "https://mytesturl.com/");
+
+            //Document title - page title, if you want GA to know page/screen title where event has happened
+            //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dt
+            eventTracker.AddToCustomPayload("dt", "My test title");
+
+            //Screen Name - name of the screen where event has happened
+            //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cd
+            eventTracker.AddToCustomPayload("cd", "My screen name");
+
+            //Data source. You can use your app name here
+            //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ds
+            eventTracker.AddToCustomPayload("ds", "App Name");
+
+            //Custom Dimension. You need to create it first in your GA admin interface
+            //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cd_
+            eventTracker.AddToCustomPayload("cd1", "Custom Dimension 1 value");
+
+            //Custom Metric. You need to create it first in your GA admin interface
+            //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cm_
+            eventTracker.AddToCustomPayload("cm1", "100");
+
+            //Queue Time. We can modify event time by suppliyng queue time for the hit up to 4 hours in milliseconds
+            //https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#qt
+            eventTracker.AddToCustomPayload("qt", "560");
+
+
+            IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
+
+            var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+                // Required if no user id. 
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
+                "35009a79-1a05-49d7-b876-2b884d0f825b",
+                // Required. The event category for the event. 
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
+                "test category",
+                // Required. The event action for the event. 
+                //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
+                "test action",
+                // Optional. The event label for the event.
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
+                "test label",
+                // Optional. The event value for the event.
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
+                "10",
+                // Required if no client id. 
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
+                "user-id"
+            );
+
+            var result = eventTracker.TrackEvent(analyticsEvent);
+
+            Assert.IsFalse(result.Failed);
+        }
+
     }
 }

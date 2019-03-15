@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Web;
 using NUnit.Framework;
@@ -32,7 +33,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             
             _postDataBuilderMock.Expect(mock => mock.BuildPostDataString(
                     Arg<string>.Is.Anything,
-                    Arg<UniversalAnalyticsEvent>.Is.Anything))
+                    Arg<UniversalAnalyticsEvent>.Is.Anything,
+                    Arg<NameValueCollection>.Is.Anything))
                 .Return(expectedPostData);
 
             _eventTracker.TrackEvent(_analyticsEvent);
@@ -48,7 +50,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
             _postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
                     Arg<string>.Is.Anything,
-                    Arg<UniversalAnalyticsEvent>.Is.Anything))
+                    Arg<UniversalAnalyticsEvent>.Is.Anything,
+                    Arg<NameValueCollection>.Is.Anything))
                 .Return(expectedPostData);
 
             _googleDataSenderMock.Expect(mock => mock.SendDataAsync(
@@ -69,7 +72,9 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
             _postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
                     Arg<string>.Is.Anything,
-                    Arg<UniversalAnalyticsEvent>.Is.Anything))
+                    Arg<UniversalAnalyticsEvent>.Is.Anything,
+                    Arg<NameValueCollection>.Is.Anything
+                    ))
                 .Return(new List<KeyValuePair<string, string>>());
 
             _googleDataSenderMock.Expect(mock => mock.SendData(Arg<Uri>.Is.Anything,
@@ -88,7 +93,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
             _postDataBuilderMock.Expect(mock => mock.BuildPostDataCollection(
                     Arg<string>.Is.Anything,
-                    Arg<UniversalAnalyticsEvent>.Is.Anything))
+                    Arg<UniversalAnalyticsEvent>.Is.Anything,
+                    Arg<NameValueCollection>.Is.Anything))
                 .Return(new List<KeyValuePair<string, string>>());
 
             _googleDataSenderMock.Expect(mock => mock.SendDataAsync(Arg<Uri>.Is.Anything,

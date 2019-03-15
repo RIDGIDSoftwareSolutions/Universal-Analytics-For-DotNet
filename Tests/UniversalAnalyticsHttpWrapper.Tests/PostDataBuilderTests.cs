@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
@@ -144,15 +145,26 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Assert.Null(nameValueCollection[PostDataBuilder.PARAMETER_KEY_EVENT_VALUE]);
         }
 
-        private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue)
+
+        //added by Dmitry Klymenko, 15 Mar 2019
+        [Test]
+        public void ItPutsAdditionalPayload()
         {
-            string postDataString = _postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent);
+            NameValueCollection nvc = new NameValueCollection(1);
+            nvc.Add("qt", "560");
+
+            ValidateKeyValuePairIsSetOnPostData("qt", "560", nvc);
+        }
+
+        private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue, NameValueCollection customPayload = null)
+        {
+            string postDataString = _postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, customPayload);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postDataString);
             string actualValue = nameValueCollection[key];
             Assert.AreEqual(expectedValue, actualValue);
 
-            var postDataCollection = _postDataBuilder.BuildPostDataCollection(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent);
+            var postDataCollection = _postDataBuilder.BuildPostDataCollection(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, customPayload);
             string actualCollectionValue = postDataCollection.Single(s => s.Key == key).Value;
             Assert.AreEqual(expectedValue, actualCollectionValue);
         }
