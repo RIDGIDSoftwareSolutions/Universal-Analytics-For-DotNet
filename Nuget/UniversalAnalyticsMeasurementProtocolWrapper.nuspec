@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
     <metadata>
         <id>UniversalAnalyticsMeasurementProtocolWrapper</id>
-        <version>1.4.4</version>
+        <version>1.6.0</version>
         <title>Universal Analytics Measurement Protocol .NET Wrapper</title>
         <authors>jakejgordon</authors>
         <owners>jakejgordon</owners>
@@ -13,10 +13,12 @@
         <description>Wrapper for pushing data to Universal Analytics properties via the Measurement Protocol (version 1) on the server-side. This version only supports pushing Event data to web properties.</description>
         <summary>Wrapper for pushing data to Universal Analytics properties via the Measurement Protocol on the server-side. This version only supports pushing Event data to web properties.</summary>
         <releaseNotes>
+		* 1.6.0 (courtesy of DmitryKlymenkoAU) Added ability to add custom key/value pairs that aren't explicitly supported by the interface
+		* 1.5.0 Added ability to set the non-interaction hit flag so not all events have to be treated as interactions.
 		* 1.4.4 Added ability to track via userId; Compress errors into object to avoid crashes.
 		* 1.4.0 Added async methods and switched the back-end to use the HTTPS Google endpoint instead of the HTTP one
 		* 1.3.0 Major overhaul to the interfaces. Provided a factory for getting IUniversalAnalyticsEvent objects, and eliminated one of the required app settings.</releaseNotes>
-        <copyright>jakejgordon 2017</copyright>
+        <copyright>jakejgordon 2019</copyright>
         <language>en-US</language>
         <tags>UniversalAnalytics Analytics MeasurementProtocol GoogleAnalytics</tags>
         <dependencies>
